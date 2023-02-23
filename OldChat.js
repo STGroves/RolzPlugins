@@ -7,4 +7,4 @@ if (!DM.userdata.hasOwnProperty("p_chat"))
 else
   TableUI.pane.open(DM.userdata.p_chat);
 
-Chat.init();
+Chat.init({rollCommandPrefix : '#'});
