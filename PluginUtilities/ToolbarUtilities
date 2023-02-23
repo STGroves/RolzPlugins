@@ -1,0 +1,3 @@
+function createButton(toolbar, hint, icon, idx) {
+  
+}
