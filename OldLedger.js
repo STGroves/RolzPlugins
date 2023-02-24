@@ -31,3 +31,11 @@ function DisplayLedger() {
 }
 
 ToolbarUtilities.createButton("table-toolbar", "ledger", "Ledger", "list-ul", DisplayLedger);
+
+let tabs = document.getElementById("table-dock-tabs");
+
+if (tabs.childNodes.length === 0) {
+  document.getElementById("table-dock-tabs").style.display = "none";
+  document.getElementById("table-dock-resizer").style.display = "none";
+  document.getElementById("table-dock-container").style.display = "none";
+}
