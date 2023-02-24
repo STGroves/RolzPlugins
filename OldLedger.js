@@ -34,7 +34,7 @@ ToolbarUtilities.createButton("table-toolbar", "ledger", "Ledger", "list-ul", Di
 
 let tabs = document.getElementById("table-dock-tabs");
 
-if (tabs.childNodes.length === 0) {
+if (tabs.childNodes.length === 1) {
   document.getElementById("table-dock-tabs").style.display = "none";
   document.getElementById("table-dock-resizer").style.display = "none";
   document.getElementById("table-dock-container").style.display = "none";
