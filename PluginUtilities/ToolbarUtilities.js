@@ -68,7 +68,7 @@ function createButton(toolbarID, buttonID, hint, icon, callback, idx = -1) {
 
     let toolbar = document.getElementById(toolbarID);
     
-    if (!toolbar || (toolbarID !== "table-toolbar" && !!toolbar.classList.contains("tool-bar")))
+    if (!toolbar || (toolbarID !== "table-toolbar" && !toolbar.classList.contains("tool-bar")))
       throw "Element is not a toolbar!";
     
     if (!!document.getElementById(buttonID))
