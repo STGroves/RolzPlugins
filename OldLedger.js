@@ -1,6 +1,9 @@
 import ToolbarUtilities from "./PluginUtilities/ToolbarUtilities.js";
 
 function DisplayLedger() {
+  if (!!document.getElementById("view-plugin_ledger"))
+    return;
+
   if (!DM.userdata.hasOwnProperty("p_plugin_ledger"))
     TableUI.pane.open({
       id : 'plugin_ledger',
