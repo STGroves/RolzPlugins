@@ -97,6 +97,9 @@ function createButton(toolbarID, buttonID, hint, icon, callback, idx = -1) {
       toolbar.appendChild(menuBtn);
     }
 
+    if (toolbarID === "selection-bar")
+      toolbar.style.width = "auto";
+
   } catch(e) {
     console.error(e);
   }
