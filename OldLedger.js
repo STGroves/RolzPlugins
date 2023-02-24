@@ -11,7 +11,7 @@ function DisplayLedger() {
       h : 25
     });
   else
-    TableUI.pane.open(DM.userdata.p_ledger);
+    TableUI.pane.open(DM.userdata.p_plugin_ledger);
 
   let content = document.getElementById("view-plugin_ledger-content");
   let ledgerContent = document.getElementById("view-tbl_ledger-content");

@@ -1,7 +1,7 @@
 if (!DM.userdata.hasOwnProperty("p_plugin_chat"))
   TableUI.pane.open({id:"plugin_chat", x: 0, y: 66, w: 40, h: 33, title: "Chat", noclose: true, style: "overflow:hidden;"});
 else
-  TableUI.pane.open(DM.userdata.p_chat);
+  TableUI.pane.open(DM.userdata.p_plugin_chat);
 
 let content = document.getElementById("view-plugin_chat-content");
 let chatContent = document.getElementById("view-chat-content");
