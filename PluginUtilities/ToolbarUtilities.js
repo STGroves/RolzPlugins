@@ -25,3 +25,7 @@ function createToolbar(id, css, parentElement = null) {
 function createButton(toolbar, hint, icon, idx) {
 
 }
+
+export default {
+  createToolbar
+}
