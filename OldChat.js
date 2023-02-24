@@ -1,5 +1,5 @@
 if (!DM.userdata.hasOwnProperty("p_chat"))
-  TableUI.pane.open({id:"chat", x: 0, y: 89, w: 33, h: 15, title: "Chat", noclose: true, style: "overflow:hidden;"});
+  TableUI.pane.open({id:"chat", x: 0, y: 63, w: 40, h: 33, title: "Chat", noclose: true, style: "overflow:hidden;"});
 else
   TableUI.pane.open(DM.userdata.p_chat);
 
