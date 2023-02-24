@@ -1,4 +1,4 @@
-import ToolbarUtilities from "./PluginUtilities/ToolbarUtilities";
+import ToolbarUtilities from "./PluginUtilities/ToolbarUtilities.js";
 
 function DisplayLedger() {
   if (!DM.userdata.hasOwnProperty("p_tbl_ledger"))
