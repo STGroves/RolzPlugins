@@ -8,7 +8,7 @@ if(!foundImage)
 image.src = foundImage.url;
 image.style.width = "100%";
 
-document.getElementById("room_info").replaceChildren([image]);
+document.getElementById("room_info").replaceChildren(image);
 } catch(e) {
   console.error(e);
 }
