@@ -1,9 +1,9 @@
 import ToolbarUtilities from "./PluginUtilities/ToolbarUtilities.js";
 
 function DisplayLedger() {
-  if (!DM.userdata.hasOwnProperty("p_tbl_ledger"))
+  if (!DM.userdata.hasOwnProperty("p_ledger"))
     TableUI.pane.open({
-      id : 'tbl_ledger',
+      id : 'ledger',
       title : 'Ini. Ledger',
       x : 50,
       y : 75,
@@ -11,9 +11,9 @@ function DisplayLedger() {
       h : 25
     });
   else
-    TableUI.pane.open(DM.userdata.p_tbl_ledger);
+    TableUI.pane.open(DM.userdata.p_ledger);
 
-  let content = document.getElementById("view-chat-content");
+  let content = document.getElementById("view-ledger-content");
   let ledgerContent = document.getElementById("view-tbl_ledger-content");
   
   content.appendChild(ledgerContent);
