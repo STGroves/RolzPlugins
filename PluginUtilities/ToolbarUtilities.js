@@ -91,7 +91,12 @@ function createButton(toolbarID, buttonID, hint, icon, callback, idx = -1) {
       menuBtn.appendChild(btnIcon);
     }
 
-    toolbar.insertBefore(menuBtn, toolbar.children[idx]);
+    if (idx > -1) {
+      toolbar.insertBefore(menuBtn, toolbar.children[idx]);
+    } else {
+      toolbar.appendChild(menuBtn);
+    }
+
   } catch(e) {
     console.error(e);
   }
