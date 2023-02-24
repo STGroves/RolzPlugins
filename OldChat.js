@@ -4,15 +4,22 @@ else
   TableUI.pane.open(DM.userdata.p_chat);
 
 let content = document.getElementById("view-chat-content");
+let chatContent = document.getElementById("view-chat-content");
 let output = document.getElementById("output");
 let chatInput = document.getElementById("prompt-line-lower");
 	
-output.style = "bottom: 38px";
+output.style = "bottom: 36px";
 chatInput.style = "bottom: 0; left: 0; right: 0; margin: 0";
 	
-content.append(output);
-content.append(chatInput);
+content.append(chatContent);
 
-document.getElementById("table-dock-tabs").remove();
-document.getElementById("table-dock-resizer").remove();
-document.getElementById("table-dock-container").remove();
+document.getElementById("view-chat").remove();
+document.getElementById("tgb-chat").remove();
+
+let tabs = document.getElementById("table-dock-tabs");
+
+if (tabs.childNodes.length === 0) {
+  document.getElementById("table-dock-tabs").remove();
+  document.getElementById("table-dock-resizer").remove();
+  document.getElementById("table-dock-container").remove();
+}
