@@ -2,7 +2,7 @@ try {
 let image = document.createElement("img");
 let foundImage = custom_token_list.find(x => x.name = "RoomLogo.png");
 
-if(!!foundImage)
+if(!foundImage)
   throw "Cannot find Room logo!";
 
 image.src = foundImage.url;
