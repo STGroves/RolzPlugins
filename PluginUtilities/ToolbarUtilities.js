@@ -29,6 +29,8 @@ function createToolbar(id, cssClass, parentElement = null) {
     toolbar.classList.add("tool-bar");
     
     parentElement.appendChild(toolbar);
+
+    return toolbar;
   } catch(e) {
     console.error(e);
   }
@@ -100,6 +102,7 @@ function createButton(toolbarID, buttonID, hint, icon, callback, idx = -1) {
     if (toolbarID === "selection-bar")
       toolbar.style.width = "auto";
 
+    return menuBtn;
   } catch(e) {
     console.error(e);
   }
