@@ -61,7 +61,9 @@ DM.tools.tokens.edit_properties = function(id) {
               save_token();
             }
           }
-        ))
+        ));
+        parent.parentElement.innerHTML = `Rotation
+        (Hold SHIFT to snap)`;
       }
     }
   )

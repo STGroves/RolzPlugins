@@ -5,10 +5,16 @@ const ID = "PluginCSS";
 function createSlider(opts) {
   let sliderRange = document.createElement("input");
 
+  let isSnapping = false;
+  
   let updateTrack = function(element, progressColour, trackColour) {
     const width = element.offsetWidth;
     const adjWidth = width - 16;
     const delta = element.max - element.min;
+    
+    if (isSnapping)
+      element.value = Math.round(element.value / 45) * 45;
+    
     const stepPercent = (element.value - element.min) / delta;
     const actualWidth = (adjWidth * stepPercent) + (16 / 2);
     const widthPercent = actualWidth / width;
@@ -36,15 +42,25 @@ function createSlider(opts) {
   sliderRange.ariaLabel = opts.value;
   
   sliderRange.oninput = () => {
-    sliderRange.ariaLabel = sliderRange.value;
     updateTrack(sliderRange, "#aaf1aa", "transparent");
-    opts.callback(sliderRange.value);
+    sliderRange.ariaLabel = sliderRange.value;
+    opts.callback();
   };
-  sliderRange.onmousedown = () => {updateTrack(sliderRange, "#aaf1aa", "transparent")};
+  sliderRange.onkeydown = (event) => {
+    isSnapping = event.shiftKey;
+  };
+  sliderRange.onkeyup = (event) => {
+    isSnapping = event.shiftKey;
+  };
+  sliderRange.onmousedown = () => {
+    updateTrack(sliderRange, "#aaf1aa", "transparent");
+  };
   sliderRange.onmousemove = (event) => {
-    updateTrack(sliderRange, event.buttons == 0 ? "#80D480" : "#aaf1aa", "transparent")
+    updateTrack(sliderRange, event.buttons == 0 ? "#80D480" : "#aaf1aa", "transparent");
   };
-  sliderRange.onmouseleave = () => {updateTrack(sliderRange, "lightgreen", "transparent")};
+  sliderRange.onmouseleave = () => {
+    updateTrack(sliderRange, "lightgreen", "transparent");
+  };
 
   if (!document.getElementById(ID) || !document.getElementById(ID).innerHTML.search(".PluginSlider"))
     createOrUpdateStyle("PluginDefault",`.PluginSlider {
@@ -58,6 +74,9 @@ function createSlider(opts) {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
+    }
+    .PluginSlider:focus {
+      outline: none;
     }
     .PluginSlider::-webkit-slider-thumb {
       -webkit-appearance: none !important;
