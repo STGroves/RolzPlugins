@@ -12,7 +12,7 @@ DM.tools.tokens.edit_properties = function(id) {
     load : '/table/token-edit?room_id='+WSConnection.options.room_id+'&map_id=current&token_id='+encodeURIComponent(id),
   }));
   }).then(x => 
-  document.getElementsByClassName("rot-buttons")[0].replaceChildren(HTMLUtilities.createSlider(
+    document.getElementById("view-tbl_prop_edit-content").querySelector("rot-buttons").replaceChildren(HTMLUtilities.createSlider(
     {
       id: "rotation",
       min: 0,
