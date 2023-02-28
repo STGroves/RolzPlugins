@@ -49,41 +49,25 @@ DM.tools.tokens.edit_properties = function(id) {
       load : '/table/token-prop?room_id='+WSConnection.options.room_id+'&map_id=current&token_id='+encodeURIComponent(id),
       
       callback : () => {
-        let parent = document.getElementById("view-tbl_prop_edit-content").querySelector(".rot-buttons");
-        parent.style.position = "relative";
-        parent.replaceChildren(HTMLUtilities.createSlider(
+        let parent = document.getElementById("view-tbl_prop_edit-content")
+                             .querySelector(".rot-buttons")
+                             .parent;
+        parent.innerHTML = `<div style="flex:0.2; min-width: 120px; padding:9px; padding-left: 0; position: relative">
+        <label for="table-opt-show-base">Rotation</label>
+        <i class="fa fa-question-circle" style="position: absolute; right: 10px; top: 50%; transform:translateY(-50%)"><div class="hint--bottom-right" aria-label="Hold SHIFT to snap to 45 degrees" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; font-weight: normal"></div></i>
+    </div>`;
+
+        parent.assignChild(HTMLUtilities.createSlider(
           {
             id: "rotation",
             min: 0,
             max: 360,
             value: token.r,
             callback: (value) => {
-              token.r = value;
-              save_token();
+              save_token({'r': value});
             }
           }
         ));
-
-        let help = document.createElement("i");
-        help.classList.add("fa", "fa-question-circle");
-        help.style.position = "absolute";
-        help.style.top = "50%";
-        help.style.transform = "translateY(-50%)";
-        help.style.right = "10px";
-
-        let helpHint = document.createElement("div");
-        helpHint.ariaLabel = "Hold SHIFT to snap to 45 degrees";
-        helpHint.style.top = 0;
-        helpHint.style.left = 0;
-        helpHint.style.right = 0;
-        helpHint.style.bottom = 0;
-        helpHint.style.position = "absolute";
-        helpHint.style.fontWeight = "normal";
-        helpHint.classList.add("hint--bottom-right");
-
-        help.innerHTML = helpHint.outerHTML;
-
-        parent.parentElement.insertBefore(help, parent);
       }
     }
   )
