@@ -5,7 +5,7 @@ let style = document.getElementById("map-dynamic-style");
 
 function loadCSS() {
   for (const [_, value] of Object.entries(DM.data.token)) {
-    if (!sizes.includes(value.sz) && style.innerHTML.search(".token-" + token.sz + "x") === -1)
+    if (!sizes.includes(value.sz) && style.innerHTML.search(".token-" + value.sz + "x") === -1)
       addClass(value.sz);
   }
 }
