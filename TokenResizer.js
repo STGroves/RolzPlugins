@@ -4,7 +4,7 @@ const sizes = ["1", "1_5", "2", "3", "4"];
 let style = document.getElementById("map-dynamic-style");
 
 function loadCSS() {
-  for (const [_, value] of Object.entries(DM.data.tokens)) {
+  for (const [_, value] of Object.entries(DM.data.token)) {
     if (!sizes.includes(value.sz) && style.innerHTML.search(".token-" + token.sz + "x") === -1)
       addClass(value.sz);
   }
