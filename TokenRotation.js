@@ -51,7 +51,7 @@ DM.tools.tokens.edit_properties = function(id) {
       callback : () => {
         let parent = document.getElementById("view-tbl_prop_edit-content")
                              .querySelector(".rot-buttons")
-                             .parent;
+                             .parentElement;
         parent.innerHTML = `<div style="flex:0.2; min-width: 120px; padding:9px; padding-left: 0; position: relative">
         <label for="table-opt-show-base">Rotation</label>
         <i class="fa fa-question-circle" style="position: absolute; right: 10px; top: 50%; transform:translateY(-50%)"><div class="hint--bottom-right" aria-label="Hold SHIFT to snap to 45 degrees" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; font-weight: normal"></div></i>
