@@ -14,7 +14,7 @@ DM.tools.tokens.edit_properties = function(id) {
     })
     resolve();
   }).then(x => 
-    document.getElementById("view-tbl_prop_edit-content").querySelector("rot-buttons").replaceChildren(HTMLUtilities.createSlider(
+    document.getElementById("view-tbl_prop_edit-content").querySelector(".rot-buttons").replaceChildren(HTMLUtilities.createSlider(
     {
       id: "rotation",
       min: 0,
