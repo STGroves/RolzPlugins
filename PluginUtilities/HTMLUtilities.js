@@ -44,7 +44,7 @@ function createSlider(opts) {
   sliderRange.oninput = () => {
     updateTrack(sliderRange, "#aaf1aa", "transparent");
     sliderRange.ariaLabel = sliderRange.value;
-    opts.callback();
+    opts.callback(sliderRange.value);
   };
   sliderRange.onkeydown = (event) => {
     isSnapping = event.shiftKey;
