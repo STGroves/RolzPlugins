@@ -37,7 +37,8 @@ function createSlider(opts) {
   
   sliderRange.oninput = () => {
     sliderRange.ariaLabel = sliderRange.value;
-    updateTrack(sliderRange, "#aaf1aa", "transparent")
+    updateTrack(sliderRange, "#aaf1aa", "transparent");
+    opts.callback(sliderRange.value);
   };
   sliderRange.onmousedown = () => {updateTrack(sliderRange, "#aaf1aa", "transparent")};
   sliderRange.onmousemove = (event) => {

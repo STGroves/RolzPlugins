@@ -56,6 +56,10 @@ DM.tools.tokens.edit_properties = function(id) {
             min: 0,
             max: 360,
             value: token.r,
+            callback: (value) => {
+              token.r = value;
+              save_token();
+            }
           }
         ))
       }
