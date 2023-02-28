@@ -81,7 +81,7 @@ DM.tools.tokens.edit_properties = function(id) {
         helpHint.style.fontWeight = "normal";
         helpHint.classList.add("hint--bottom-right");
 
-        help.innerHTML = helpHint.html;
+        help.innerHTML = helpHint.outerHTML;
 
         parent.parentElement.insertBefore(help, parent);
       }
