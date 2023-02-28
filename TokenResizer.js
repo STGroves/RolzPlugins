@@ -11,7 +11,7 @@ function loadCSS() {
 }
 
 function addClass(size) {
-  let sizeNum = Number(string.replace("_", "."));
+  let sizeNum = Number(size.replace("_", "."));
   style.innerHTML += `.token-${size}x { width: ${sizeNum * DM.tile_size }px; height: ${sizeNum * DM.tile_size}px; }
   .token-${size}x .glyph { font-size: ${sizeNum * DM.tile_size / 1.3}px; }`;
 }
