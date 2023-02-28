@@ -1,4 +1,4 @@
-import HTMLUtilities from "./PluginUtilities/HTMLUtilities"
+import HTMLUtilities from "./PluginUtilities/HTMLUtilities.js"
 
 DM.tools.tokens.edit_properties = function(id) {
   DM.selected_id = id;

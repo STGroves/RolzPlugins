@@ -1,4 +1,4 @@
-import Utilities from "./Utilities";
+import Utilities from "./Utilities.js";
 
 const ID = "PluginCSS";
 
