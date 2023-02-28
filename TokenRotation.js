@@ -1,8 +1,8 @@
 import HTMLUtilities from "./PluginUtilities/HTMLUtilities.js"
 
 DM.tools.tokens.edit_properties = function(id) {
-  DM.selected_id = id;
-  TableUI.pane.open({
+  new Promise((resolve) => {DM.selected_id = id;
+  resolve(TableUI.pane.open({
     id : 'tbl_prop_edit',
     title : 'Token Properties',
     x : 75,
@@ -10,7 +10,8 @@ DM.tools.tokens.edit_properties = function(id) {
     w : 25,
     h : 60,
     load : '/table/token-edit?room_id='+WSConnection.options.room_id+'&map_id=current&token_id='+encodeURIComponent(id),
-  });
+  }));
+  }).then(x => 
   document.getElementById("rot-buttons").replaceChildren(HTMLUtilities.createSlider(
     {
       id: "rotation",
@@ -18,5 +19,5 @@ DM.tools.tokens.edit_properties = function(id) {
       max: 360,
       value: token.r,
     }
-  ));
+  )));
 }
