@@ -19,8 +19,8 @@ ToolbarUtilities.createButton("table-toolbar", "ledger", "Ledger", "list-ul", Di
 
 let tabs = document.getElementById("table-dock-tabs");
 
-document.getElementById("view-chat").remove();
-document.getElementById("tgb-chat").remove();
+document.getElementById("view-tbl_ledger").remove();
+document.getElementById("tgb-tbl_ledger").remove();
 
 if (tabs.childNodes.length === 0) {
   document.getElementById("table-dock-tabs").remove();
