@@ -13,8 +13,8 @@ TableUI.dock.toggle = function(id) {
     document.getElementById("table-dock-container").style.display = "none";
     document.getElementById("table-dock-resizer").style.display = "none";
   } else {
-    document.getElementById("table-dock-tabs").style.bottom = undefined;
-    document.getElementById("table-dock-container").style.display = undefined;
-    document.getElementById("table-dock-resizer").style.display = undefined;
+    document.getElementById("table-dock-tabs").style.bottom = "";
+    document.getElementById("table-dock-container").style.display = "";
+    document.getElementById("table-dock-resizer").style.display = "";
   }
 }
