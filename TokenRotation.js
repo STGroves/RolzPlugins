@@ -46,7 +46,8 @@ DM.tools.tokens.edit_properties = function(id) {
       y : 10,
       w : 25,
       h : 60,
-      load : '/table/token-edit?room_id='+WSConnection.options.room_id+'&map_id=current&token_id='+encodeURIComponent(id),
+      load : '/table/token-prop?room_id='+WSConnection.options.room_id+'&map_id=current&token_id='+encodeURIComponent(id),
+      
       callback : () => {
         let parent = document.getElementById("view-tbl_prop_edit-content").querySelector(".rot-buttons");
         parent.style.position = "relative";
