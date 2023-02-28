@@ -57,7 +57,7 @@ DM.tools.tokens.edit_properties = function(id) {
         <i class="fa fa-question-circle" style="position: absolute; right: 10px; top: 50%; transform:translateY(-50%)"><div class="hint--bottom-right" aria-label="Hold SHIFT to snap to 45 degrees" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; font-weight: normal"></div></i>
     </div>`;
 
-        parent.assignChild(HTMLUtilities.createSlider(
+        parent.appendChild(HTMLUtilities.createSlider(
           {
             id: "rotation",
             min: 0,
