@@ -3,7 +3,7 @@ setInterval(() => {loadCSS();}, 500);
 const sizes = ["1", "1_5", "2", "3", "4"];
 let style = document.getElementById("map-dynamic-style");
 
-DM.map_pane.addEventListener("wheel", loadCSS);
+DM.map_pane[0].addEventListener("wheel", loadCSS);
 
 function loadCSS() {
   for (const [_, value] of Object.entries(DM.data.token)) {
