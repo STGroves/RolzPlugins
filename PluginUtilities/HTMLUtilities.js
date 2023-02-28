@@ -53,6 +53,7 @@ function createSlider(opts) {
       height: 8px;
       border: black solid 1px;
       width: 100%;
+      margin: 0;
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
