@@ -1,4 +1,4 @@
-import ToolbarUtilities from "./PluginUtilities/ToolbarUtilities.js";
+import ToolbarUtilities from "../PluginUtilities/ToolbarUtilities.js";
 
 function DisplayLedger() {
   if (!!document.getElementById("view-plugin_ledger"))

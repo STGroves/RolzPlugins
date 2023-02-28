@@ -1,4 +1,4 @@
-import HTMLUtilities from "./PluginUtilities/HTMLUtilities.js"
+import HTMLUtilities from "../PluginUtilities/HTMLUtilities.js"
 
 TableUI.pane.open = function(opt) {
   if(TableUI.pane.list[opt.id])
