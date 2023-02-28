@@ -63,7 +63,7 @@ function createSlider(opts) {
   };
 
   if (!document.getElementById(ID) || !document.getElementById(ID).innerHTML.search(".PluginSlider"))
-    createOrUpdateStyle("PluginDefault",`.PluginSlider {
+    createOrUpdateStyle(ID,`.PluginSlider {
       -webkit-appearance: none;
       -moz-appearance: none;
       border-radius: 8px;
@@ -95,7 +95,7 @@ function createSlider(opts) {
   let val = (opts.value - opts.min) / (opts.max - opts.min);
   let percent = val * 100;
   
-  createOrUpdateStyle("PluginDefault",`#${opts.id} {
+  createOrUpdateStyle(ID,`#${opts.id} {
     background-image: -webkit-gradient(linear,
       left top, 
       right top, 
