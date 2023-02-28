@@ -63,8 +63,27 @@ DM.tools.tokens.edit_properties = function(id) {
             }
           }
         ));
-        parent.parentElement.innerHTML = `Rotation
-        (Hold SHIFT to snap)`;
+
+        let help = document.createElement("i");
+        help.classList.add("fa", "fa-question-circle");
+        help.style.position = "absolute";
+        help.style.top = "50%";
+        help.style.transform = "translateY(-50%)";
+        help.style.right = "10px";
+
+        let helpHint = document.createElement("div");
+        helpHint.ariaLabel = "Hold SHIFT to snap to 45 degrees";
+        helpHint.style.top = 0;
+        helpHint.style.left = 0;
+        helpHint.style.right = 0;
+        helpHint.style.bottom = 0;
+        helpHint.style.position = "absolute";
+        helpHint.style.fontWeight = "normal";
+        helpHint.classList.add("hint--bottom-right");
+
+        help.assignChild(helpHint);
+
+        parent.parentElement.insertBefore(help, parent);
       }
     }
   )
