@@ -119,5 +119,5 @@ function createOrUpdateStyle(ID, cssString, parentElement = null) {
 
 export default {
   createSlider,
-  createStyle
+  createOrUpdateStyle
 }
