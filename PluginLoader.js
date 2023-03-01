@@ -1,14 +1,35 @@
-const arr = ["OldChat", "OldLedger", "RoomLogo", "TokenResizer", "TokenRotation"];
-
-function load() {
+function init(plugins) {
+  let loaded = [];
   const elem = document.getElementsByTagName("body")[0];
-  arr.forEach((x) => {
-    let A = document.createElement("script");
-    A.type = "module";
-    A.onload = function() {};
-    A.src = `https://stgroves.github.io/RolzPlugins/Plugins/${x}.js`;
-    elem.insertBefore(A, elem.lastChild);
+
+  this.load = function(opts) {
+    try {
+      if (loaded.includes(opts.type.toLowerCase()))
+        throw `${opts.type} has already been loaded!`;
+
+      let scriptElem = document.createElement("script");
+      scriptElem.type = "module";
+      scriptElem.src = `https://stgroves.github.io/RolzPlugins/${opts.type}.js`;
+      elem.insertBefore(scriptElem, elem.lastChild);
+
+      if (!opts.initialFunc || (!!opts.initialFunc && opts.initialFunc()))
+        loaded.push(opts.type.toLowerCase());
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  this.contains = function(name) {
+    return loaded.includes(name.toLowerCase());
+  }
+
+  plugins.forEach(value => {
+    load(value);
   });
+
+  return this;
 }
 
-load();
+export default {
+  init
+}
