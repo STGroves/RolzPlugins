@@ -2,19 +2,19 @@ function init(plugins) {
   let loaded = [];
   const elem = document.getElementsByTagName("body")[0];
 
-  this.load = function(opts) {
+  this.load = function(path) {
     try {
-      if (loaded.includes(opts.type.toLowerCase()))
-        throw `${opts.type} has already been loaded!`;
+      if (loaded.includes(path.toLowerCase()))
+        throw `${path} has already been loaded!`;
 
       let scriptElem = document.createElement("script");
       scriptElem.type = "module";
-      scriptElem.src = `https://stgroves.github.io/RolzPlugins/${opts.type}.js`;
+      scriptElem.src = `https://stgroves.github.io/RolzPlugins/${path}}.js`;
       elem.insertBefore(scriptElem, elem.lastChild);
       
       console.log("2nd!");
 
-      loaded.push(opts.type.toLowerCase());
+      loaded.push(path.toLowerCase());
     } catch (e) {
       console.error(e);
     }
