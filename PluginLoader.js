@@ -26,7 +26,7 @@ function init(plugins) {
   }
 
   plugins.forEach(value => {
-    load(value);
+    this.load(value);
   });
 
   return this;
