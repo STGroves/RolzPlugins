@@ -1,6 +1,6 @@
 import PluginLoader from "https://stgroves.github.io/RolzPlugins/PluginLoader.js";
 
-let Plugins = PluginLoader.init([
+DM.data.plugins = PluginLoader.init([
   {type: "Plugins/DockMinimiser", initialFunc: "DockMinimiser"}
 ]);
 console.log("Run!");
