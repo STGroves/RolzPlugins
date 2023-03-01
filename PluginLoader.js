@@ -11,10 +11,9 @@ function init(plugins) {
       scriptElem.type = "module";
       scriptElem.src = `https://stgroves.github.io/RolzPlugins/${opts.type}.js`;
       elem.insertBefore(scriptElem, elem.lastChild);
+      
+      console.log("2nd!");
 
-      //if (!!opts.initialFunc)
-        //scriptElem.onload = new Function(`${opts.initialFunc}()`)();
-        
       loaded.push(opts.type.toLowerCase());
     } catch (e) {
       console.error(e);

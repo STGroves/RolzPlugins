@@ -20,7 +20,7 @@ let DockMinimiser = function() {
     }
   }
 
-  return true;
+  console.log("1st!");
 }
 
-export default {DockMinimiser}
+DockMinimiser();
