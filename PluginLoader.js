@@ -12,6 +12,8 @@ function init(plugins) {
       scriptElem.src = `https://stgroves.github.io/RolzPlugins/${opts.type}.js`;
       elem.insertBefore(scriptElem, elem.lastChild);
 
+      console.log(opts);
+
       if (!opts.initialFunc || (!!opts.initialFunc && new Function(`${opts.initialFunc}()`)))
         loaded.push(opts.type.toLowerCase());
     } catch (e) {
