@@ -6,6 +6,10 @@ export default function() {
     else
       $('#tgb-'+id).addClass('inactive');
 
+    TableUI.dock.updateDock();
+  }
+
+  TableUI.dock.updateDock = function() {
     const list = document.getElementById("table-dock-tabs").children;
     const allEqual = Array.from(list).every((value) => value.classList.contains("inactive") === true);
 
@@ -19,4 +23,6 @@ export default function() {
       document.getElementById("table-dock-resizer").style.display = "";
     }
   }
+
+  TableUI.dock.updateDock();
 }
