@@ -19,6 +19,4 @@ export default function() {
       document.getElementById("table-dock-resizer").style.display = "";
     }
   }
-
-  console.log("1st!");
 }

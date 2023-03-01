@@ -4,8 +4,16 @@ function init(plugins) {
 
   this.load = function(path) {
     try {
-      if (loaded.includes(path.toLowerCase()))
-        throw `${path} has already been loaded!`;
+      let foundPlugin = loaded.find(x => x.plugin === path.toLowerCase());
+      
+      if (!!foundPlugin) {
+        if (foundPlugin.status === "Loading")
+          throw `${path} is already loading!`;
+        else if (foundPlugin.status === "Loaded")
+          throw `${path} has already been loaded!`;
+        else
+          throw 'Unknown Status';
+      }
 
       let scriptElem = document.createElement("script");
       scriptElem.type = "module";
@@ -14,13 +22,15 @@ function init(plugins) {
         try {
           let script = await import(`https://stgroves.github.io/RolzPlugins/${path}.js`);
           script.default();
+          loaded.find(x => x.plugin === path.toLowerCase()).status = "Loaded";
         } catch(e) {
-          console.error(e)
+          loaded.splice(loaded.findIndex(x => x.plugin === path.toLowerCase()), 1);
+          console.error(e);
         }
       }
       elem.insertBefore(scriptElem, elem.lastChild);
 
-      loaded.push(path.toLowerCase());
+      loaded.push({plugin: path.toLowerCase(), status: "Loading"});
     } catch (e) {
       console.error(e);
     }
@@ -28,6 +38,10 @@ function init(plugins) {
 
   this.contains = function(name) {
     return loaded.includes(name.toLowerCase());
+  }
+
+  this.getStatus = function(plugin) {
+    return loaded.find(x => x.plugin === plugin.toLowerCase()).status;
   }
 
   plugins.forEach(value => {
