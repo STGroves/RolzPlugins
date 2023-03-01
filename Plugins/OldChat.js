@@ -25,11 +25,6 @@ export default function() {
   document.getElementById("view-chat").remove();
   document.getElementById("tgb-chat").remove();
 
-  let tabs = document.getElementById("table-dock-tabs");
-
-  if (tabs.childNodes.length === 0) {
-    document.getElementById("table-dock-tabs").remove();
-    document.getElementById("table-dock-resizer").remove();
-    document.getElementById("table-dock-container").remove();
-  }
+  if (!!TableUI.dock.hasOwnProperty("updateDock"))
+    TableUI.dock.updateDock();
 }
