@@ -10,6 +10,7 @@ function init(plugins) {
       let scriptElem = document.createElement("script");
       scriptElem.type = "module";
       scriptElem.src = `https://stgroves.github.io/RolzPlugins/${path}.js`;
+      scriptElem.onload = () => {console.log("Hello!")}
       elem.insertBefore(scriptElem, elem.lastChild);
       
       console.log("2nd!");
