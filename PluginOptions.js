@@ -1,10 +1,6 @@
-const elem = document.getElementsByTagName("body")[0];
-let scriptElem = document.createElement("script");
-scriptElem.type = "module";
-scriptElem.src = `https://stgroves.github.io/RolzPlugins/PluginLoader.js`;
-elem.insertBefore(scriptElem, elem.lastChild);
+import PluginLoader from "https://stgroves.github.io/RolzPlugins/PluginLoader.js";
 
-let Plugins = init([
+let Plugins = PluginLoader.init([
   {type: "Plugins/DockMinimiser", initialFunc: DockMinimiser}
 ]);
 console.log("Run!");
