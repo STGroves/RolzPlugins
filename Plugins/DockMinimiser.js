@@ -22,5 +22,3 @@ let DockMinimiser = function() {
 
   console.log("1st!");
 }
-
-DockMinimiser();

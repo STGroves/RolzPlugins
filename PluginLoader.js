@@ -10,10 +10,14 @@ function init(plugins) {
       let scriptElem = document.createElement("script");
       scriptElem.type = "module";
       scriptElem.src = `https://stgroves.github.io/RolzPlugins/${path}.js`;
-      scriptElem.onload = () => {console.log("Hello!")}
+      scriptElem.onload = () => {
+        try {
+          new Function("DockMinimiser()")();
+        } catch(e) {
+          console.error(e)
+        }
+      }
       elem.insertBefore(scriptElem, elem.lastChild);
-      
-      console.log("2nd!");
 
       loaded.push(path.toLowerCase());
     } catch (e) {
