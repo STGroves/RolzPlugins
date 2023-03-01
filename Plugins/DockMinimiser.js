@@ -1,4 +1,4 @@
-function DockMinimiser() {
+let DockMinimiser = function() {
   TableUI.dock.toggle = function(id) {
     $('#view-'+id).toggle();
     if($('#tgb-'+id).hasClass('inactive'))
@@ -22,3 +22,5 @@ function DockMinimiser() {
 
   return true;
 }
+
+export default {DockMinimiser}
