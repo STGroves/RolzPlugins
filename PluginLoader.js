@@ -10,9 +10,10 @@ function init(plugins) {
       let scriptElem = document.createElement("script");
       scriptElem.type = "module";
       scriptElem.src = `https://stgroves.github.io/RolzPlugins/${path}.js`;
-      scriptElem.onload = () => {
+      scriptElem.onload = async () => {
         try {
-          new Function("DockMinimiser()")();
+          let script = await import(`https://stgroves.github.io/RolzPlugins/${path}.js`);
+          script.default();
         } catch(e) {
           console.error(e)
         }
