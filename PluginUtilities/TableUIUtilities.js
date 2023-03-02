@@ -71,7 +71,7 @@ export default function() {
       $('#view-'+opt.id+'-content')
       .html('loading...▮')
       .load(opt.load, () => {
-        if (TableUI.pane.onOpen.hasOwnProperty(id))
+        if (TableUI.pane.onOpen.hasOwnProperty(opt.id))
           TableUI.pane.onOpen[id].forEach(callback => {
             callback();
           });
