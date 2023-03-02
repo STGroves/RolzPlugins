@@ -57,9 +57,10 @@ export default function () {
     const inpBox = document.createElement("input");
     inpBox.classList.add("input");
     inpBox.type = "number";
+    inpBox.value = Number(token.sz.replace("_", "."));
     inpBox.onchange = () => {
       const actualValue = String(inpBox.value).replace(".","_");
-      save_token({sz: actualValue});
+      save_token({sz: actualValue, csz: true});
     }
 
     parent.replaceChild(inpBox, child);
