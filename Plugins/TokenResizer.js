@@ -1,8 +1,10 @@
+import HTMLUtilities from "../PluginUtilities/HTMLUtilities.js";
+
 export default function () {
   const defaultSizes = ["1", "1_5", "2", "3", "4"];
   let customSizes = [];
 
-  let style = document.getElementById("map-dynamic-style");
+  const style = document.getElementById("map-dynamic-style");
 
   document.addEventListener("message", updateCSS);
   DM.map_pane[0].addEventListener("wheel", loadCSS);
@@ -13,6 +15,10 @@ export default function () {
   DM.data.plugins.addCallbackListener("PluginUtilities/TableUIUtilities", () => {
     TableUI.pane.addHandler("onOpen", 'tbl_prop_edit', addResizeInput);
   })
+
+  HTMLUtilities.createOrUpdateStyle("TokenResizerCSS", `.NoOutline:focus {
+    outline: 0;
+  }`);
 
   loadCSS();
 
@@ -45,7 +51,7 @@ export default function () {
   }
 
   function addClass(size) {
-    let sizeNum = Number(size.replace("_", "."));
+    const sizeNum = Number(size.replace("_", "."));
     style.innerHTML += `.token-${size}x { width: ${sizeNum * DM.tile_size }px; height: ${sizeNum * DM.tile_size}px; }
     .token-${size}x .glyph { font-size: ${sizeNum * DM.tile_size / 1.3}px; }`;
   }
@@ -55,7 +61,7 @@ export default function () {
     const parent = child.parentElement;
 
     const inpBox = document.createElement("input");
-    inpBox.classList.add("input");
+    inpBox.classList.add("input", "NoOutline");
     inpBox.type = "number";
     inpBox.value = Number(token.sz.replace("_", "."));
     inpBox.onchange = () => {
