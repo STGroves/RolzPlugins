@@ -7,7 +7,10 @@ export default function () {
   document.addEventListener("message", updateCSS);
   DM.map_pane[0].addEventListener("wheel", loadCSS);
 
-  if (!TableUI.pane.onOpen.hasOwnProperty('tbl_prop_edit') || !TableUI.pane.onOpen['tbl_prop_edit'].includes(addRotationSlider))
+  if (!DM.data.plugins.contains("PluginUtilities/TableUIUtilities"))
+    DM.data.plugins.load("PluginUtilities/TableUIUtilities");
+
+  if (!TableUI.pane.onOpen.hasOwnProperty('tbl_prop_edit') || !TableUI.pane.onOpen['tbl_prop_edit'].includes(addResizeInput))
     TableUI.pane.addHandler("onOpen", 'tbl_prop_edit', addResizeInput);
 
   loadCSS();
