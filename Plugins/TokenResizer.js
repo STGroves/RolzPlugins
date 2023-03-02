@@ -24,7 +24,7 @@ export default function () {
 
   function loadCSS() {
     for (const [_, value] of Object.entries(DM.data.token)) {
-      if (value.sz === undefined)
+      if (value.sz === undefined || value.sz === "")
         continue;
 
       const strVal = String(value.sz).replace(".", "_");
