@@ -27,6 +27,7 @@ function init(plugins) {
           const script = await import(`https://stgroves.github.io/RolzPlugins/${path}.js`);
           script.default();
           
+          const foundPlugin = loaded.find(x => x.plugin === lowerPath);
           foundPlugin.status = "Loaded";
           foundPlugin.callback.forEach(x => x());
         } catch(e) {
