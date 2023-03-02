@@ -1,39 +1,80 @@
-TableUI.pane.open = function(opt) {
-  if(TableUI.pane.list[opt.id])
-    TableUI.pane.close(opt.id);
-  TableUI.pane.list[opt.id] = opt;
-  var prefs = TableUI.pane.prefs[opt.id];
-  if(!isset(opt.min_w)) opt.min_w = 15;
-  if(!isset(opt.min_h)) opt.min_h = 10;
-  var saved_opt = DM.userdata['p_'+opt.id];
-  if(saved_opt) {
-    opt.x = clamp(saved_opt.x, 0, 96);
-    opt.y = clamp(saved_opt.y, 0, 96);
-    opt.w = clamp(saved_opt.w, 0, 100);
-    opt.h = clamp(saved_opt.h, 0, 100);
-  };
-  if(!prefs) {
-    if(!isset(opt.w)) opt.w = 25;
-    if(!isset(opt.h)) opt.h = 40;
-    if(!isset(opt.x)) opt.x = 10;
-    if(!isset(opt.y)) opt.y = 10;
-  } else {
-    opt.x = prefs.x;
-    opt.y = prefs.y;
-    opt.w = prefs.w;
-    opt.h = prefs.h;
-  }
-  opt.x = clamp(opt.x, 0, 96);
-  opt.y = clamp(opt.y, 0, 96);
-  opt.w = clamp(opt.w, 0, 100);
-  opt.h = clamp(opt.h, 0, 100);
-  $('#view-panes').append(TableUI.view_pane_template(opt));
-  TableUI.pane._apply_coordinates(opt);
-  if(opt.noclose) $('#view-'+opt.id+' .fa-window-close').remove();
-  if(opt.load)
-    $('#view-'+opt.id+'-content').html('loading...▮').load(opt.load, opt.callback);
-}
+export default function() {
+  TableUI.pane.onOpen = {};
+  TableUI.pane.onClose = {};
 
-export default {
-  openPane: TableUI.pane.open
+  TableUI.pane.addHandler = function(type, id, callback) {
+    const actualType = type.toLowercase();
+
+    switch (actualType) {
+      case "onopen":
+        if (!TableUI.pane.onOpen.hasOwnProperty(id))
+          TableUI.pane.onOpen[id] = [];
+
+        TableUI.pane.onOpen[id].push(callback);
+        break;
+      
+      case "onclose":
+        if (!TableUI.pane.onClose.hasOwnProperty(id))
+          TableUI.pane.onClose[id] = [];
+
+        TableUI.pane.onClose[id].push(callback);
+        break;
+    }
+  }
+
+  TableUI.pane.close = function(id) {
+    if(TableUI.pane.list[id]) {
+      TableUI.pane.prefs[id] = TableUI.pane.list[id];
+      delete TableUI.pane.list[id];
+    }
+    $('#view-'+id).remove();
+
+    if (TableUI.pane.onClose.hasOwnProperty(id))
+      TableUI.pane.onClose[id].forEach(callback => {
+        callback();
+      });
+  }
+
+  TableUI.pane.open = function(opt) {
+    if(TableUI.pane.list[opt.id])
+      TableUI.pane.close(opt.id);
+    TableUI.pane.list[opt.id] = opt;
+    var prefs = TableUI.pane.prefs[opt.id];
+    if(!isset(opt.min_w)) opt.min_w = 15;
+    if(!isset(opt.min_h)) opt.min_h = 10;
+    var saved_opt = DM.userdata['p_'+opt.id];
+    if(saved_opt) {
+      opt.x = clamp(saved_opt.x, 0, 96);
+      opt.y = clamp(saved_opt.y, 0, 96);
+      opt.w = clamp(saved_opt.w, 0, 100);
+      opt.h = clamp(saved_opt.h, 0, 100);
+    };
+    if(!prefs) {
+      if(!isset(opt.w)) opt.w = 25;
+      if(!isset(opt.h)) opt.h = 40;
+      if(!isset(opt.x)) opt.x = 10;
+      if(!isset(opt.y)) opt.y = 10;
+    } else {
+      opt.x = prefs.x;
+      opt.y = prefs.y;
+      opt.w = prefs.w;
+      opt.h = prefs.h;
+    }
+    opt.x = clamp(opt.x, 0, 96);
+    opt.y = clamp(opt.y, 0, 96);
+    opt.w = clamp(opt.w, 0, 100);
+    opt.h = clamp(opt.h, 0, 100);
+    $('#view-panes').append(TableUI.view_pane_template(opt));
+    TableUI.pane._apply_coordinates(opt);
+    if(opt.noclose) $('#view-'+opt.id+' .fa-window-close').remove();
+    if(opt.load)
+      $('#view-'+opt.id+'-content')
+      .html('loading...▮')
+      .load(opt.load, () => {
+        if (TableUI.pane.onOpen.hasOwnProperty(id))
+          TableUI.pane.onOpen[id].forEach(callback => {
+            callback();
+          });
+      });
+  }
 }
