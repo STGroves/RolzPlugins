@@ -16,7 +16,9 @@ export default function() {
     });
   }
 
-  ToolbarUtilities.createButton("table-toolbar", "ledger", "Ledger", "list-ul", DisplayLedger);
+  const count = document.getElementById("table-toolbar").childElementCount - 1;
+
+  ToolbarUtilities.createButton("table-toolbar", "ledger", "Ledger", "list-ul", DisplayLedger, count);
 
   document.getElementById("view-tbl_ledger").remove();
   document.getElementById("tgb-tbl_ledger").remove();
