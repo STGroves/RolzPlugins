@@ -63,7 +63,10 @@ export default function () {
     const inpBox = document.createElement("input");
     inpBox.classList.add("input", "NoOutline");
     inpBox.type = "number";
-    inpBox.value = Number(token.sz.replace("_", "."));
+
+    const size = token.sz || "1";
+    inpBox.value = Number(size.replace("_", "."));
+    
     inpBox.onchange = () => {
       const actualValue = String(inpBox.value).replace(".","_");
       save_token({sz: actualValue, csz: true});
