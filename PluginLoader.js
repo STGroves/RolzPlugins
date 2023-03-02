@@ -40,7 +40,7 @@ function init(plugins) {
   }
 
   this.contains = function(name) {
-    return loaded.includes(name.toLowerCase());
+    return loaded.includes(x => x.plugin === name.toLowerCase());
   }
 
   this.getStatus = function(plugin) {
