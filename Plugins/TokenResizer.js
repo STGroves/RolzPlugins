@@ -81,10 +81,10 @@ export default function () {
     const child = elementBase.querySelector("select[onchange=\"save_token({ 'sz' : $(this).val() });\"]")
     const parent = child.parentElement;
 
-    const inpWrapper = createElement("div");
+    const inpWrapper = document.createElement("div");
     inpWrapper.classList.add("InputWrapper");
 
-    const inpLabel = createElement("label");
+    const inpLabel = document.createElement("label");
     inpLabel.innerHTML = "X";
     inpLabel.classList.add("Suffix");
 
