@@ -73,7 +73,7 @@ export default function() {
       .load(opt.load, () => {
         if (TableUI.pane.onOpen.hasOwnProperty(opt.id))
           TableUI.pane.onOpen[opt.id].forEach(callback => {
-            callback($('#view-'+opt.id));
+            callback($('#view-'+opt.id)[0]);
           });
       });
   }
