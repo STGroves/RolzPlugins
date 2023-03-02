@@ -16,8 +16,29 @@ export default function () {
     TableUI.pane.addHandler("onOpen", 'tbl_prop_edit', addResizeInput);
   })
 
-  HTMLUtilities.createOrUpdateStyle("TokenResizerCSS", `.NoOutline:focus {
+  HTMLUtilities.createOrUpdateStyle("TokenResizerCSS", `  .NoOutline:focus {
     outline: 0;
+  }
+  .NoOutline {
+      border: 0;
+  }
+  .NoOutline::-webkit-outer-spin-button, .NoOutline::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .InputWrapper {
+    display: flex;
+    border: 1px solid rgba(200,200,200,0.3);
+    padding-right: 6px;
+  }
+  .Suffix {
+    color: lightgreen;
+    font-weight: bold;
+    font-family: helvetica, Tahoma, Arial;
+    min-width: 0 !important;
+    flex: 0 !important;
+    right: 50%;
+    transform: TranslateX(-50%);
   }`);
 
   loadCSS();
@@ -60,6 +81,13 @@ export default function () {
     const child = elementBase.querySelector("select[onchange=\"save_token({ 'sz' : $(this).val() });\"]")
     const parent = child.parentElement;
 
+    const inpWrapper = createElement("div");
+    inpWrapper.classList.add("InputWrapper");
+
+    const inpLabel = createElement("label");
+    inpLabel.innerHTML = "X";
+    inpLabel.classList.add("Suffix");
+
     const inpBox = document.createElement("input");
     inpBox.classList.add("input", "NoOutline");
     inpBox.type = "number";
@@ -72,6 +100,8 @@ export default function () {
       save_token({sz: actualValue, csz: true});
     }
 
-    parent.replaceChild(inpBox, child);
+    inpWrapper.append(inpBox, inpLabel);
+
+    parent.replaceChild(inpWrapper, child);
   }
 }
