@@ -85,23 +85,24 @@ export default function() {
 		$('#prompt-window').fadeOut(250);
 		$('#prompt-window-footer-text').html('');
 		$('#document-shade').remove();
-		TableUI.prompt_open = false;
 		$(document).off('keydown');
 
-    if (TableUI.onPromptClose.hasOwnProperty(id))
-      TableUI.onPromptClose[id].forEach(callback => {
+    if (TableUI.onPromptClose.hasOwnProperty(TableUI.currentPrompt))
+      TableUI.onPromptClose[TableUI.currentPrompt].forEach(callback => {
         callback();
       });
-	},
+    
+    TableUI.currentPrompt = "";
+	}
 
 	TableUI.open_prompt = function(url) {
 		TableUI.close_prompt();
-		TableUI.prompt_open = true;
+		TableUI.currentPrompt = url;
 		$('body').append('<div id="document-shade"></div>');
 		$('#prompt-window > .content').html('loading...▮').load(url, () => {
-      if (TableUI.onPromptOpen.hasOwnProperty(opt.id))
-        TableUI.onPromptOpen[opt.id].forEach(callback => {
-          callback($('#view-'+opt.id)[0]);
+      if (TableUI.onPromptOpen.hasOwnProperty(url))
+        TableUI.onPromptOpen[url].forEach(callback => {
+          callback($('#prompt-window')[0]);
         });
     });
 		var doc_height = $(document).height();
@@ -126,5 +127,12 @@ export default function() {
 		$(document).on('keydown', (e) => {
 			if(e.keyCode == 27) TableUI.close_prompt();
 		});
+	}
+
+  TableUI.toggle_prompt = function(url) {
+		if(TableUI.currentPrompt !== "")
+			TableUI.close_prompt();
+		else
+			TableUI.open_prompt(url);
 	}
 }
