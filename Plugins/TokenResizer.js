@@ -10,11 +10,9 @@ export default function () {
   if (!DM.data.plugins.contains("PluginUtilities/TableUIUtilities"))
     DM.data.plugins.load("PluginUtilities/TableUIUtilities");
 
-  console.log(TableUI.pane);
-  console.log(TableUI.pane.onOpen);
-
-  if (!TableUI.pane.onOpen.hasOwnProperty('tbl_prop_edit') || !TableUI.pane.onOpen['tbl_prop_edit'].includes(addResizeInput))
+  DM.data.plugins.addCallbackListener("PluginUtilities/TableUIUtilities", () => {
     TableUI.pane.addHandler("onOpen", 'tbl_prop_edit', addResizeInput);
+  })
 
   loadCSS();
 

@@ -7,7 +7,8 @@ function init(plugins) {
 
   this.load = function(path) {
     try {
-      let foundPlugin = loaded.find(x => x.plugin === path.toLowerCase());
+      const lowerPath = path.toLowerCase();
+      const foundPlugin = loaded.find(x => x.plugin === lowerPath);
       
       if (!!foundPlugin) {
         if (foundPlugin.status === "Loading")
@@ -18,29 +19,35 @@ function init(plugins) {
           throw 'Unknown Status';
       }
 
-      let scriptElem = document.createElement("script");
+      const scriptElem = document.createElement("script");
       scriptElem.type = "module";
       scriptElem.src = `https://stgroves.github.io/RolzPlugins/${path}.js`;
       scriptElem.onload = async () => {
         try {
-          let script = await import(`https://stgroves.github.io/RolzPlugins/${path}.js`);
+          const script = await import(`https://stgroves.github.io/RolzPlugins/${path}.js`);
           script.default();
-          loaded.find(x => x.plugin === path.toLowerCase()).status = "Loaded";
+          
+          foundPlugin.status = "Loaded";
+          foundPlugin.callback.forEach(x => x());
         } catch(e) {
-          loaded.splice(loaded.findIndex(x => x.plugin === path.toLowerCase()), 1);
+          loaded.splice(loaded.findIndex(x => x.plugin === lowerPath), 1);
           console.error(e);
         }
       }
       elem.insertBefore(scriptElem, elem.lastChild);
 
-      loaded.push({plugin: path.toLowerCase(), status: "Loading"});
+      loaded.push({plugin: lowerPath, status: "Loading", callback: []});
     } catch (e) {
       console.error(e);
     }
   }
 
-  this.contains = function(name) {
-    return loaded.findIndex(x => x.plugin === name.toLowerCase()) > -1;
+  this.addCallbackListener = function(plugin, callback) {
+    loaded.find(x => x.plugin === plugin.toLowerCase()).callback.push(callback);
+  }
+
+  this.contains = function(plugin) {
+    return loaded.findIndex(x => x.plugin === plugin.toLowerCase()) > -1;
   }
 
   this.getStatus = function(plugin) {
