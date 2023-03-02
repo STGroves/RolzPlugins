@@ -72,7 +72,7 @@ export default function() {
       .html('loading...▮')
       .load(opt.load, () => {
         if (TableUI.pane.onOpen.hasOwnProperty(opt.id))
-          TableUI.pane.onOpen[id].forEach(callback => {
+          TableUI.pane.onOpen[opt.id].forEach(callback => {
             callback();
           });
       });
