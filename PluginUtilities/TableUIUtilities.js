@@ -3,7 +3,7 @@ export default function() {
   TableUI.pane.onClose = {};
 
   TableUI.pane.addHandler = function(type, id, callback) {
-    const actualType = type.toLowercase();
+    const actualType = type.toLowerCase();
 
     switch (actualType) {
       case "onopen":
