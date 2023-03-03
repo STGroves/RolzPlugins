@@ -19,9 +19,9 @@ function createPromptPage(opts) {
 
   opts.baseElement.querySelector("#dialog-options").appendChild(pageDiv);
 
-  pageDiv.innerHTML = "Hello!";
-
   dialogOptions.appendChild(pageDiv);
+
+  return pageDiv;
 }
 
 export default {

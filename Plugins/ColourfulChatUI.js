@@ -1,9 +1,17 @@
 import WindowUtilities from "../PluginUtilities/WindowUtilities.js";
 
 export default function() {
-  if (!WSConnection.options.mappref.colours) {
-    WSConnection.options.mappref.colours = {};
-    DM.send("creator-update", WSConnection.options.mappref);
+  const colourObj = {};
+
+  document.addEventListener("message", handleMessage)
+
+  if (!DM.userdata.custom.chatColour) {
+    DM.userdata.custom.chatColour = "";
+    
+    const userPrefs = JSON.parse(JSON.stringify(DM.userdata));
+    userPrefs.type = "user_update";
+
+    DM.send(userPrefs);
   }
 
   $.each(drTemplateTypes, function(idx, elementId) {
@@ -40,11 +48,11 @@ export default function() {
       if (span === null)
         return div.innerHTML;
       
-      if (!WSConnection.options.mappref.colours[msg.from])
+      if (!colourObj[msg.from] || colourObj[msg.from] === undefined)
         return div.innerHTML;
 
       span.classList.remove("username");
-      span.style.color = WSConnection.options.mappref.colours[msg.from];
+      span.style.color = colourObj[msg.from];
       span.style.fontWeight = "bold";
 
       return div.innerHTML;
@@ -59,12 +67,41 @@ export default function() {
     TableUI.addHandler("onPromptOpen", '/table/options?room_id=' + encodeURIComponent(WSConnection.options.room_id), loadColoursPage);
   });
 
+  function handleMessage(data) {
+    if (!!data.context && data.context === "join") {
+      colourObj[data.from] = PartyList.members.find(x => x.nick === data.from).custom.chatColour;
+      return;
+    }
+
+  }
+
   function loadColoursPage() {
     const base = document.getElementById("prompt-window");
-    WindowUtilities.createPromptPage({
+    const content = WindowUtilities.createPromptPage({
       id: "ColourfulChatUI",
       label: "Colourful Chat UI",
       baseElement: base
     });
+
+    content.innerHTML = `<div class="prompt-section-header">Settings</div>
+    <div class="prompt-section">
+        <div class="flex-input">
+            <label>Allow Player Choice</label>
+            <input type="checkbox" style="flex: 0;" id="">
+        </div>
+    </div>
+    <div class="prompt-section-header">Player Colours</div>
+    <div id="colourSection" class="prompt-section">`;
+
+    const colourSection = base.querySelector("#colourSection");
+
+    for (const[key, _] of Object.entries(colourObj)) {
+      const div = document.createElement("div");
+      div.innerHTML = `<div class="flex-input">
+      <label>${key}</label>
+      <input type="color" style="vertical-align: middle;">
+  </div>`;
+      colourSection.appendChild(div);
+    }
   }
 }

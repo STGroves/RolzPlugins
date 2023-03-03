@@ -63,7 +63,7 @@ export default function () {
 
     delete data.mapdata.csz;
 
-    const strVal = String(value.sz).replace(".", "_");
+    const strVal = String(data.mapdata.sz).replace(".", "_");
 
     if (customSizes.includes(strVal))
       return;
