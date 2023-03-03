@@ -68,11 +68,18 @@ export default function() {
   function handleMessage(data) {
     const found = Object.entries(PartyList.members).find(x => x[1].nick === data.detail.from)[1];
 
-    if ((!!data.detail.context && data.detail.context === "join") ||
-      (!!data.detail.mapdata.updateType && data.detail.mapdata.updateType === "chatColour")) {
+    if (!!data.detail.context && data.detail.context === "join")
       colourObj[data.detail.from] = found.custom.chatColour;
-      return;
-    }
+
+      else if(!!data.detail.mapdata && !!data.detail.mapdata.updateType && data.detail.mapdata.updateType === "chatColour") {
+        const user = data.detail.mapdata.updateData.affectedUser;
+        const colour = data.detail.mapdata.updateData.colour;
+        
+        colourObj[user] = colour;
+
+        if (user === data.detail.from)
+          DM.userdata.custom.chatColour = colour;
+      }
   }
 
   function loadColoursPage() {
@@ -99,11 +106,10 @@ export default function() {
       const div = document.createElement("div");
       div.innerHTML = `<div class="flex-input">
       <label>${key}</label>
-      <input type="color" style="vertical-align: middle;" onchange="DM.userdata.custom.chatColour = this.value;
-      const userdata = JSON.parse(JSON.stringify(DM.userdata));
+      <input type="color" style="vertical-align: middle;" onchange="const userdata = JSON.parse(JSON.stringify(DM.userdata));
       userdata.type = 'user_update';
       userdata.updateType = 'chatColour';
-      userdata.affectedUser = '${key}';
+      userdata.updateData = {affectedUser: '${key}', colour: this.value};
       DM.send(userdata);"/>
   </div>`;
       colourSection.appendChild(div);
