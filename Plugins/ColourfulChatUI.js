@@ -1,4 +1,9 @@
 export default function() {
+  if (!WSConnection.options.mappref.colours) {
+    WSConnection.options.mappref.colours = {};
+    DM.send("creator-update", WSConnection.options.mappref);
+  }
+
   $.each(drTemplateTypes, function(idx, elementId) {
 
     var hbRender = Handlebars.compile($(elementId).html());
