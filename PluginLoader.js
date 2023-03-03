@@ -2,6 +2,9 @@ function init(plugins) {
   let loaded = [];
   const elem = document.getElementsByTagName("body")[0];
   document.onMessage = (data) => {
+    if (data.type === "keep-alive-return")
+      return;
+      
     document.dispatchEvent(new CustomEvent("message", {detail: data}));
   }
 
