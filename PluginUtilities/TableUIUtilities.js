@@ -25,6 +25,26 @@ export default function() {
     }
   }
 
+  TableUI.addHandler = function(type, url, callback) {
+    const actualType = type.toLowerCase();
+
+    switch (actualType) {
+      case "onpromptopen":
+        if (!TableUI.onPromptOpen.hasOwnProperty(url))
+          TableUI.onPromptOpen[url] = [];
+
+        TableUI.onPromptOpen[url].push(callback);
+        break;
+      
+      case "onpromptclose":
+        if (!TableUI.onPromptClose.hasOwnProperty(url))
+          TableUI.onPromptClose[url] = [];
+
+        TableUI.onPromptClose[url].push(callback);
+        break;
+    }
+  }
+
   TableUI.pane.close = function(id) {
     if(TableUI.pane.list[id]) {
       TableUI.pane.prefs[id] = TableUI.pane.list[id];

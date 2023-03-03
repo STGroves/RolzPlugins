@@ -98,6 +98,7 @@ export default function () {
     inpBox.onchange = () => {
       const actualValue = String(inpBox.value).replace(".","_");
       save_token({sz: actualValue, csz: true});
+      loadCSS();
     }
 
     inpWrapper.append(inpBox, inpLabel);

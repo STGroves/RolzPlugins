@@ -1,3 +1,5 @@
+import WindowUtilities from "../PluginUtilities/WindowUtilities.js";
+
 export default function() {
   if (!WSConnection.options.mappref.colours) {
     WSConnection.options.mappref.colours = {};
@@ -49,4 +51,20 @@ export default function() {
     };
   
   });
+
+  if (!DM.data.plugins.contains("PluginUtilities/TableUIUtilities"))
+    DM.data.plugins.load("PluginUtilities/TableUIUtilities");
+
+  DM.data.plugins.addCallbackListener("PluginUtilities/TableUIUtilities", () => {
+    TableUI.addHandler("onPromptOpen", '/table/options?room_id=' + encodeURIComponent(WSConnection.options.room_id), loadColoursPage);
+  });
+
+  function loadColoursPage() {
+    const base = document.getElementById("prompt-window");
+    WindowUtilities.createPromptPage({
+      id: "ColourfulChatUI",
+      label: "Colourful Chat UI",
+      baseElement: base
+    });
+  }
 }
