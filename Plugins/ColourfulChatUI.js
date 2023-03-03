@@ -67,8 +67,8 @@ export default function() {
 
   function handleMessage(data) {
     if (!!data.detail.context && data.detail.context === "join") {
-      colourObj[data.detail.from] = Object.entries(PartyList.members)
-                                          .find(x => x[1].nick === data.detail.from).custom.chatColour;
+      const found = Object.entries(PartyList.members).find(x => x[1].nick === data.detail.from);
+      colourObj[data.detail.from] = found.custom.chatColour;
       return;
     }
 
