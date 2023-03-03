@@ -106,11 +106,11 @@ export default function() {
       const div = document.createElement("div");
       div.innerHTML = `<div class="flex-input">
       <label>${key}</label>
-      <input type="color" style="vertical-align: middle;" onchange="const userdata = JSON.parse(JSON.stringify(DM.userdata));
-      userdata.type = 'user_update';
-      userdata.updateType = 'chatColour';
-      userdata.updateData = {affectedUser: '${key}', colour: this.value};
-      DM.send(userdata);" value="${value}"/>
+      <input type="color" style="vertical-align: middle;" onchange="const colourData = JSON.parse(JSON.stringify(DM.userdata));
+      colourData.type = 'user_update';
+      colourData.updateType = 'chatColour';
+      colourData.updateData = {affectedUser: '${key}', colour: this.value};
+      DM.send(colourData);" value="${value}"/>
   </div>`;
       colourSection.appendChild(div);
     }
