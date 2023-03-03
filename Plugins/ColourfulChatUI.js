@@ -69,7 +69,7 @@ export default function() {
     const found = Object.entries(PartyList.members).find(x => x[1].nick === data.detail.from)[1];
 
     if ((!!data.detail.context && data.detail.context === "join") ||
-      (!!data.detail.updateType && data.detail.updateType === "chatColour")) {
+      (!!data.detail.mapdata.updateType && data.detail.mapdata.updateType === "chatColour")) {
       colourObj[data.detail.from] = found.custom.chatColour;
       return;
     }
