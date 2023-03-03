@@ -98,7 +98,10 @@ export default function() {
       const div = document.createElement("div");
       div.innerHTML = `<div class="flex-input">
       <label>${key}</label>
-      <input type="color" style="vertical-align: middle;">
+      <input type="color" style="vertical-align: middle;" onchange=\`DM.userdata.custom.chatColour = this.value;
+      const userdata = JSON.parse(JSON.stringify(DM.userdata));
+      userdata.type = "user_update";
+      DM.send(userdata);\`>
   </div>`;
       colourSection.appendChild(div);
     }
