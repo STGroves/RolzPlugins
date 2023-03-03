@@ -103,6 +103,7 @@ export default function() {
       const userdata = JSON.parse(JSON.stringify(DM.userdata));
       userdata.type = 'user_update';
       userdata.updateType = 'chatColour';
+      userdata.affectedUser = '${key}';
       DM.send(userdata);"/>
   </div>`;
       colourSection.appendChild(div);
