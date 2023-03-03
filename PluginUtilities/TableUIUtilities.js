@@ -112,7 +112,7 @@ export default function() {
         callback();
       });
     
-    TableUI.currentPrompt = "";
+    TableUI.currentPrompt = undefined;
 	}
 
 	TableUI.open_prompt = function(url) {
@@ -150,7 +150,7 @@ export default function() {
 	}
 
   TableUI.toggle_prompt = function(url) {
-		if(TableUI.currentPrompt !== "")
+		if(TableUI.currentPrompt !== undefined)
 			TableUI.close_prompt();
 		else
 			TableUI.open_prompt(url);
