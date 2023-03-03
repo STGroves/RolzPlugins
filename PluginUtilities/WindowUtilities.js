@@ -1,7 +1,7 @@
 function createPromptPage(opts) {
   const button = document.createElement("a");
   button.classList.add("tbl-tab-btn");
-  button.id = opts.id;
+  button.id = `tbl-tbtn-${opts.id}`;
   button.innerHTML = opts.label;
   button.onclick = () => {activate_tab_opt(opts.id)};
   
