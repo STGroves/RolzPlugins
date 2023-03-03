@@ -32,9 +32,12 @@ export default function() {
         
       if (span === null)
         return div.innerHTML;
-        
+      
+      if (!WSConnection.options.mappref.colours[msg.from])
+        return div.innerHTML;
+
       span.classList.remove("username");
-      span.style.color = "pink";
+      span.style.color = WSConnection.options.mappref.colours[msg.from];
       span.style.fontWeight = "bold";
 
       return div.innerHTML;

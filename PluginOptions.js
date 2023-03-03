@@ -6,5 +6,5 @@ DM.data.plugins = PluginLoader.init([
   "Plugins/OldLedger",
   "Plugins/TokenRotation",
   "Plugins/TokenResizer",
-  "Plugins/ColourfulChatUI",
+  "Plugins/ColourfulChatUI"
 ]);
