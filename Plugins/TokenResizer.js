@@ -2,7 +2,7 @@ import HTMLUtilities from "../PluginUtilities/HTMLUtilities.js";
 
 export default function () {
   const defaultSizes = ["1", "1_5", "2", "3", "4"];
-  let customSizes = [];
+  const customSizes = [];
 
   const style = document.getElementById("map-dynamic-style");
 
@@ -58,16 +58,16 @@ export default function () {
   }
 
   function updateCSS(data) {
-    if (!data.detail.data.mapdata || !data.detail.data.mapdata.csz)
+    if (!data.detail.mapdata || !data.detail.mapdata.csz)
       return;
-
-    delete data.mapdata.csz;
 
     const strVal = String(data.mapdata.sz).replace(".", "_");
 
     if (customSizes.includes(strVal))
       return;
-      
+    
+    customSizes.push(strVal);
+
     addClass(strVal);
   }
 
@@ -97,7 +97,7 @@ export default function () {
     
     inpBox.onchange = () => {
       const actualValue = String(inpBox.value).replace(".","_");
-      save_token({sz: actualValue, csz: true});
+      save_token({sz: actualValue, csz: defaultSizes.includes(actualValue)});
       loadCSS();
     }
 
