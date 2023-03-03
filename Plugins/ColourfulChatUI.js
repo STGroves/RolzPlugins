@@ -66,12 +66,13 @@ export default function() {
   });
 
   function handleMessage(data) {
-    if (!!data.detail.context && data.detail.context === "join") {
-      const found = Object.entries(PartyList.members).find(x => x[1].nick === data.detail.from)[1];
+    const found = Object.entries(PartyList.members).find(x => x[1].nick === data.detail.from)[1];
+
+    if ((!!data.detail.context && data.detail.context === "join") ||
+      (!!data.detail.updateType && data.detail.updateType === "chatColour")) {
       colourObj[data.detail.from] = found.custom.chatColour;
       return;
     }
-
   }
 
   function loadColoursPage() {
@@ -101,6 +102,7 @@ export default function() {
       <input type="color" style="vertical-align: middle;" onchange="DM.userdata.custom.chatColour = this.value;
       const userdata = JSON.parse(JSON.stringify(DM.userdata));
       userdata.type = 'user_update';
+      userdata.updateType = 'chatColour';
       DM.send(userdata);"/>
   </div>`;
       colourSection.appendChild(div);
