@@ -1,6 +1,4 @@
 export default function() {
-  const playerColours = [];
-
   $.each(drTemplateTypes, function(idx, elementId) {
 
     var hbRender = Handlebars.compile($(elementId).html());
@@ -30,9 +28,14 @@ export default function() {
       const div = document.createElement("div");
       div.innerHTML = hbRender(processMessage(msg));
 
-      const span = div.querySelector(".class");
+      const span = div.querySelector(".username");
+        
+      if (span === null)
+        return div.innerHTML;
+        
       span.classList.remove("username");
       span.style.color = "pink";
+      span.style.fontWeight = "bold";
 
       return div.innerHTML;
     };
