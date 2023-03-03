@@ -28,13 +28,13 @@ export default function() {
         msg.text_p = msg.text.autoLink({ target: "_blank", rel: "nofollow"});
 
       const div = document.createElement("div");
-      div.outerHTML = hbRender(processMessage(msg));
+      div.innerHTML = hbRender(processMessage(msg));
 
       const span = div.querySelector(".class");
       span.classList.remove("username");
       span.style.color = "pink";
 
-      return div.outerHTML;
+      return div.innerHTML;
     };
   
   });
