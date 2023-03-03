@@ -100,7 +100,7 @@ export default function() {
       <label>${key}</label>
       <input type="color" style="vertical-align: middle;" onchange="DM.userdata.custom.chatColour = this.value;
       const userdata = JSON.parse(JSON.stringify(DM.userdata));
-      userdata.type = \"user_update\";
+      userdata.type = 'user_update';
       DM.send(userdata);"/>
   </div>`;
       colourSection.appendChild(div);
