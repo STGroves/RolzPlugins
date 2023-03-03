@@ -102,7 +102,7 @@ export default function() {
 
     const colourSection = base.querySelector("#colourSection");
 
-    for (const[key, _] of Object.entries(colourObj)) {
+    for (const[key, value] of Object.entries(colourObj)) {
       const div = document.createElement("div");
       div.innerHTML = `<div class="flex-input">
       <label>${key}</label>
@@ -110,7 +110,7 @@ export default function() {
       userdata.type = 'user_update';
       userdata.updateType = 'chatColour';
       userdata.updateData = {affectedUser: '${key}', colour: this.value};
-      DM.send(userdata);"/>
+      DM.send(userdata);" value="${value}"/>
   </div>`;
       colourSection.appendChild(div);
     }
