@@ -58,7 +58,7 @@ export default function () {
   }
 
   function updateCSS(data) {
-    if (!data.mapdata || !data.mapdata.csz)
+    if (!data.detail.data.mapdata || !data.detail.data.mapdata.csz)
       return;
 
     delete data.mapdata.csz;

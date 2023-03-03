@@ -5,14 +5,12 @@ export default function() {
 
   document.addEventListener("message", handleMessage)
 
-  if (!DM.userdata.custom.chatColour) {
-    DM.userdata.custom.chatColour = "";
-    
-    const userPrefs = JSON.parse(JSON.stringify(DM.userdata));
-    userPrefs.type = "user_update";
+  colourObj[DM.userdata.nick] = DM.userdata.custom.chatColour;
+  
+  const userPrefs = JSON.parse(JSON.stringify(DM.userdata));
+  userPrefs.type = "user_update";
 
-    DM.send(userPrefs);
-  }
+  DM.send(userPrefs);
 
   $.each(drTemplateTypes, function(idx, elementId) {
 
@@ -68,8 +66,8 @@ export default function() {
   });
 
   function handleMessage(data) {
-    if (!!data.context && data.context === "join") {
-      colourObj[data.from] = PartyList.members.find(x => x.nick === data.from).custom.chatColour;
+    if (!!data.detail.context && data.detail.context === "join") {
+      colourObj[data.detail.from] = PartyList.members.find(x => x.nick === data.detail.from).custom.chatColour;
       return;
     }
 

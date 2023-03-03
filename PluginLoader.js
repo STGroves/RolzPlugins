@@ -2,7 +2,7 @@ function init(plugins) {
   let loaded = [];
   const elem = document.getElementsByTagName("body")[0];
   document.onMessage = (data) => {
-    document.dispatchEvent(new CustomEvent("message", data));
+    document.dispatchEvent(new CustomEvent("message", {detail: data}));
   }
 
   this.load = function(path) {
