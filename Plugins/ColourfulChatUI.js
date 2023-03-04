@@ -128,7 +128,11 @@ export default function() {
       const {user, ...colourData} = data.mapsettings.updateData;
       colourObj[user] = colourData;
       WSConnection.options.mappref.chatUI.userData[user] = colourData;
-      DM.send({type: CREATOR, mapsettings: WSConnection.options.mappref});
+
+      delete data.mapsettings.updateTags;
+      delete data.mapsettings.updateData;
+
+      DM.send({type: CREATOR, mapsettings: data.mapsettings});
       return;
     }
  
@@ -140,6 +144,10 @@ export default function() {
       const {user, ...colourData} = data.updateData;
       if (data.updateTags.includes(MSG_TAGS.NEW_USER)) {
         colourObj[from] = colourData;
+
+        delete data.updateTags;
+        delete data.updateData;
+
         WSConnection.options.mappref.chatUI.userData[from] = colourData;
         DM.send({type: CREATOR, mapsettings: WSConnection.options.mappref});
       }
