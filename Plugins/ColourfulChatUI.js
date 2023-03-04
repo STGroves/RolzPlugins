@@ -22,7 +22,9 @@ export default function() {
       DM.send({type: CREATOR, mapsettings: WSConnection.options.mappref});
     }
   }
-  colourObj[SELF] = WSConnection.options.mappref.chatUI.userData[SELF].colour;
+  
+  if (!!WSConnection.options.mappref.chatUI.userData[SELF])
+    colourObj[SELF] = WSConnection.options.mappref.chatUI.userData[SELF].colour;
   
   const userPrefs = JSON.parse(JSON.stringify(DM.userdata));
   userPrefs.type = USER;
@@ -85,7 +87,9 @@ export default function() {
   function handleConnection(msg) {}
 
   function handleMessage(msg) {
-    if (msg.detail.mapdata.updateTags.includes(MSG_TAGS.IGNORE) || !msg.detail.mapdata.updateTags.includes(MSG_UPDATE_ID))
+    if (!msg.detail.mapdata.updateTags ||
+        msg.detail.mapdata.updateTags.includes(MSG_TAGS.IGNORE) ||
+        !msg.detail.mapdata.updateTags.includes(MSG_UPDATE_ID))
       return;
 
     const data = msg.detail.mapdata;
