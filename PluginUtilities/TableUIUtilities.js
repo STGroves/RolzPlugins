@@ -147,7 +147,7 @@ export default function() {
 		$(document).on('keydown', (e) => {
 			if(e.keyCode == 27) TableUI.close_prompt();
 		});
-    
+
     activate_tab_opt(document.last_usr_tab);
 	}
 

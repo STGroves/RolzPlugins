@@ -1,11 +1,13 @@
 function init(plugins) {
   let loaded = [];
   const elem = document.getElementsByTagName("body")[0];
-  document.onMessage = (data) => {
-    if (data.type === "keep-alive-return")
+  document.onMessage = (msg) => {
+    if (msg.type === "keep-alive-return")
       return;
-      
-    document.dispatchEvent(new CustomEvent("message", {detail: data}));
+
+    const {type, ...data} = msg;
+
+    document.dispatchEvent(new CustomEvent(type, {detail: data}));
   }
 
   this.load = function(path) {

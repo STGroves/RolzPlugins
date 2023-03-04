@@ -6,7 +6,7 @@ export default function () {
 
   const style = document.getElementById("map-dynamic-style");
 
-  document.addEventListener("message", updateCSS);
+  document.addEventListener("client-tbl-mapdata", updateCSS);
   DM.map_pane[0].addEventListener("wheel", loadCSS);
 
   if (!DM.data.plugins.contains("PluginUtilities/TableUIUtilities"))
