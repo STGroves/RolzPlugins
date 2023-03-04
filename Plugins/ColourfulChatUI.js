@@ -131,6 +131,8 @@ export default function() {
 
       delete data.mapsettings.updateTags;
       delete data.mapsettings.updateData;
+      delete WSConnection.options.mappref.updateTags;
+      delete WSConnection.options.mappref.updateData;
 
       DM.send({type: CREATOR, mapsettings: data.mapsettings});
       return;
@@ -147,6 +149,8 @@ export default function() {
 
         delete data.updateTags;
         delete data.updateData;
+        delete WSConnection.options.mappref.updateTags;
+        delete WSConnection.options.mappref.updateData;
 
         WSConnection.options.mappref.chatUI.userData[from] = colourData;
         DM.send({type: CREATOR, mapsettings: WSConnection.options.mappref});
