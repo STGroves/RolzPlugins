@@ -101,6 +101,17 @@ export default function() {
     TableUI.addHandler("onPromptOpen", '/table/options?room_id=' + encodeURIComponent(WSConnection.options.room_id), loadColoursPage);
   });
 
+  DM.data.plugins.addCallbackListener("PluginUtilities/TableUIUtilities", () => {
+    TableUI.addHandler("onPromptClose", '/table/options?room_id=' + encodeURIComponent(WSConnection.options.room_id), () => {
+      delete WSConnection.options.mappref.updateTags;
+      delete WSConnection.options.mappref.updateData;
+      delete room_mapsettings.updateTags;
+      delete room_mapsettings.updateData;
+      delete userpref.updateTags;
+      delete userpref.updateData;
+    })
+  });
+
   function handleConnection(msg) {}
 
   function handleMessageUser(msg) {
