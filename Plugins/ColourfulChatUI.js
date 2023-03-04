@@ -40,6 +40,7 @@ export default function() {
       const userData = JSON.parse(JSON.stringify(DM.userdata));
       userData.updateTags = [MSG_UPDATE_ID, MSG_TAGS.GM_ONLY, MSG_TAGS.NEW_USER];
       userData.updateData = {colour: "#418030", time: Date.now()};
+      userData.type = USER;
       DM.send(userData);
     }
   }
