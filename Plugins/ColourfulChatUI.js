@@ -197,7 +197,8 @@ export default function() {
       <label>${key}</label>
       <input type="color" style="vertical-align: middle;" value="${value.colour}"/>
   </div>`;
-      div.lastElementChild.onchange = () => { updateChatUI(key, div.lastElementChild.value); }
+      const input = div.querySelector("input[type=color]");
+      input.onchange = () => { updateChatUI(key, input.value); }
       colourSection.appendChild(div);
     }
   }
