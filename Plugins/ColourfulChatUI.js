@@ -162,11 +162,13 @@ export default function() {
   }
 
   function updateChatUI(user, value) {
-    const colourData = JSON.parse(JSON.stringify(DM.userdata));
-    colourData.type = isGM() ? CREATOR : USER;
-    colourData.updateTags = [MSG_UPDATE_ID];
-    colourData.updateData = {user: user, colour: value, time: Date.now()};
-    DM.send(colourData);
+    if (isGM()) {
+      room_mapsettings.updateData = {user: user, colour: value, time: Date.now()};
+      room_mapsettings.updateTags = [MSG_UPDATE_ID];
+    } else {
+      userpref.updateTags = [MSG_UPDATE_ID];
+      userpref.updateData = {user: user, colour: value, time: Date.now()};
+    }
   }
 
   function loadColoursPage() {
