@@ -28,7 +28,8 @@ export default function() {
 
   if (ROOM_CREATOR === SELF) {
     if (!WSConnection.options.mappref.chatUI) {
-      WSConnection.options.mappref.chatUI = {allowPlayerChoice: false, userData:{}};
+      WSConnection.options.mappref.chatUI = {allowPlayerChoice: false, userData: {}};
+      WSConnection.options.mappref.chatUI.userData[SELF] = {colour: "#418030", time: Date.now()};
       DM.send({type: CREATOR, mapsettings: WSConnection.options.mappref});
     }
   }
