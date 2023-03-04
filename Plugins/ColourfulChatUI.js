@@ -140,7 +140,7 @@ export default function() {
       console.log("Hit!");
       console.log(data);
 
-      colourObj = data.chatUI.userData;
+      colourObj = data.mapsettings.chatUI.userData;
 
       console.log(colourObj);
       data.mapsettings.updateTags.push(MSG_TAGS.IGNORE);
