@@ -121,7 +121,7 @@ export default function() {
     
     if (msg.detail.mapdata.type === "user_update")
       data = msg.detail.mapdata;
-    else if (msg.detail.mapdata.mapsettings.type === "creator_update")
+    else if (msg.detail.mapdata.type === "creator_update")
       data = msg.detail.mapdata.mapsettings;
     else
       return;
