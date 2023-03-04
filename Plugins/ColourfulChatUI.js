@@ -117,7 +117,7 @@ export default function() {
   }
 
   function handleMessageGM(msg) {
-    const data = msg.detail.mapdata;
+    const data = msg.detail.mapdata || msg.detail.mapsettings;
 
     if (!data.updateTags || data.updateTags.includes(MSG_TAGS.IGNORE) || !data.updateTags.includes(MSG_UPDATE_ID))
       return;
@@ -141,13 +141,10 @@ export default function() {
       }
     }
 
-
     /*const found = Object.entries(PartyList.members).find(x => x[1].nick === from)[1];
 
     else if(!!data.detail.mapdata && !!data.detail.mapdata.updateType && data.detail.mapdata.updateType === "chatColour") {
       const {user, ...colourData} = data.detail.mapdata.updateData;
-      
-      
 
       if (user === data.detail.from) {
         const userData = data.detail.mapData;
