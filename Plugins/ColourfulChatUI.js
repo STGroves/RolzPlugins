@@ -138,6 +138,7 @@ export default function() {
         return;
 
       console.log("Hit!");
+      console.log(data);
 
       const {user, ...colourData} = data.mapsettings.updateData;
       colourObj[user] = colourData;
