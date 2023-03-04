@@ -1,7 +1,7 @@
 import WindowUtilities from "../PluginUtilities/WindowUtilities.js";
 
 export default function() {
-  const colourObj = {};
+  let colourObj = {};
 
   const CREATOR = "creator_update";
   const USER = "user_update";
@@ -43,12 +43,8 @@ export default function() {
       DM.send(userData);
     }
   }
-    colourObj[SELF] = WSConnection.options.mappref.chatUI.userData[SELF].colour;
   
-  const userPrefs = JSON.parse(JSON.stringify(DM.userdata));
-  userPrefs.type = USER;
-
-  DM.send(userPrefs);
+  colourObj = WSConnection.options.mappref.chatUI.userData;
 
   $.each(drTemplateTypes, function(idx, elementId) {
 
@@ -88,7 +84,7 @@ export default function() {
         return div.innerHTML;
 
       span.classList.remove("username");
-      span.style.color = colourObj[msg.from];
+      span.style.color = colourObj[msg.from].colour;
       span.style.fontWeight = "bold";
 
       return div.innerHTML;
@@ -113,7 +109,7 @@ export default function() {
     return;
 
     if (data.type === CREATOR) {
-      colourObj[SELF] = data.mapsettings.chatUI.userData[SELF].colour;
+      colourObj = data.mapsettings.chatUI.userData;
       return;
     }
   }
@@ -129,7 +125,7 @@ export default function() {
     const {user, ...colourData} = data.updateData;
 
     if (data.type === CREATOR) {
-      colourObj[user] = colourData.colour;
+      colourObj[user] = colourData;
       WSConnection.options.mappref.chatUI.userData[user] = colourData;
       DM.send({type: CREATOR, mapsettings: WSConnection.options.mappref});
       return;
@@ -137,7 +133,7 @@ export default function() {
  
     if (data.type === USER) {
       if (data.updateTags.includes(MSG_TAGS.NEW_USER)) {
-        colourObj[from] = colourData.colour;
+        colourObj[from] = colourData;
         WSConnection.options.mappref.chatUI.userData[from] = colourData;
         DM.send({type: CREATOR, mapsettings: WSConnection.options.mappref});
       }
@@ -198,7 +194,7 @@ export default function() {
       const div = document.createElement("div");
       div.innerHTML = `<div class="flex-input">
       <label>${key}</label>
-      <input type="color" style="vertical-align: middle;" onchange="updateChatUI(${key}, this.value);" value="${value}"/>
+      <input type="color" style="vertical-align: middle;" onchange="updateChatUI(${key}, this.value);" value="${value.colour}"/>
   </div>`;
       colourSection.appendChild(div);
     }
