@@ -140,10 +140,7 @@ export default function() {
       colourObj[user] = colourData;
       WSConnection.options.mappref.chatUI.userData[user] = colourData;
 
-      delete data.mapsettings.updateTags;
-      delete data.mapsettings.updateData;
-      delete WSConnection.options.mappref.updateTags;
-      delete WSConnection.options.mappref.updateData;
+      data.mapsettings.updateTags.push(MSG_TAGS.IGNORE);
 
       DM.send({type: CREATOR, mapsettings: data.mapsettings});
       return;
