@@ -5,25 +5,44 @@ export default function() {
 
   const CREATOR = "creator_update";
   const USER = "user_update";
-  const SELF = WSConnection.options.nick
+  const SELF = WSConnection.options.nick;
+  const ROOM_CREATOR = WSConnection.options.room_data.creator;
 
   const MSG_UPDATE_ID = "chatUI";
   const MSG_TAGS = {
     IGNORE: "IGNORE",
-    GM_ONLY: "GM_ONLY"
+    GM_ONLY: "GM_ONLY",
+    NEW_USER: "NEW_USER"
   };
 
-  document.addEventListener("client-tbl-mapdata", handleMessage);
+  function isGM() {
+    return ROOM_CREATOR === SELF;
+  }
+
+  function isGMPresent() {
+    return Object.entries(PartyList.members).find(x => x[1].nick === WSConnection.options.room_data.creator) !== undefined;
+  }
+
+  document.addEventListener("client-tbl-mapdata", isGM() ? handleMessageGM : handleMessageUser);
   document.addEventListener("svrmsg", handleConnection);
 
-  if (WSConnection.options.room_data.creator === DM.userdata.nick) {
+  if (ROOM_CREATOR === SELF) {
     if (!WSConnection.options.mappref.chatUI) {
       WSConnection.options.mappref.chatUI = {allowPlayerChoice: false, userData:{}};
       DM.send({type: CREATOR, mapsettings: WSConnection.options.mappref});
     }
   }
   
-  if (!!WSConnection.options.mappref.chatUI.userData[SELF])
+  if (!WSConnection.options.mappref.chatUI.userData[SELF])
+  {
+    if (isGMPresent())
+    {
+      const userData = JSON.parse(JSON.stringify(DM.userdata));
+      userData.updateTags = [MSG_UPDATE_ID, MSG_TAGS.GM_ONLY, MSG_TAGS.NEW_USER];
+      userData.updateData = {colour: "#418030", time: Date.now()};
+      DM.send(userData);
+    }
+  }
     colourObj[SELF] = WSConnection.options.mappref.chatUI.userData[SELF].colour;
   
   const userPrefs = JSON.parse(JSON.stringify(DM.userdata));
@@ -86,28 +105,44 @@ export default function() {
 
   function handleConnection(msg) {}
 
-  function handleMessage(msg) {
-    if (!msg.detail.mapdata.updateTags ||
-        msg.detail.mapdata.updateTags.includes(MSG_TAGS.IGNORE) ||
-        !msg.detail.mapdata.updateTags.includes(MSG_UPDATE_ID))
+  function handleMessageUser(msg) {
+    const data = msg.detail.mapdata;
+
+    if (!data.updateTags || data.updateTags.includes(MSG_TAGS.IGNORE) ||
+        !data.updateTags.includes(MSG_UPDATE_ID) || data.updateTags.includes(MSG_TAGS.GM_ONLY))
+    return;
+
+    if (data.type === CREATOR) {
+      colourObj[SELF] = data.mapsettings.chatUI.userData[SELF].colour;
+      return;
+    }
+  }
+
+  function handleMessageGM(msg) {
+    const data = msg.detail.mapdata;
+
+    if (!data.updateTags || data.updateTags.includes(MSG_TAGS.IGNORE) || !data.updateTags.includes(MSG_UPDATE_ID))
       return;
 
-    const data = msg.detail.mapdata;
     const from = msg.detail.from;
-    const gm = WSConnection.options.room_data.creator;
     
     const {user, ...colourData} = data.updateData;
 
-    if (data.type === CREATOR && SELF === gm) {
+    if (data.type === CREATOR) {
       colourObj[user] = colourData.colour;
       WSConnection.options.mappref.chatUI.userData[user] = colourData;
       DM.send({type: CREATOR, mapsettings: WSConnection.options.mappref});
       return;
     }
-    else if (data.type === CREATOR) {
-      colourObj[SELF] = data.mapsettings.chatUI.userData[SELF].colour;
-      return;
+ 
+    if (data.type === USER) {
+      if (data.updateTags.includes(MSG_TAGS.NEW_USER)) {
+        colourObj[from] = colourData.colour;
+        WSConnection.options.mappref.chatUI.userData[from] = colourData;
+        DM.send({type: CREATOR, mapsettings: WSConnection.options.mappref});
+      }
     }
+
 
     /*const found = Object.entries(PartyList.members).find(x => x[1].nick === from)[1];
 
@@ -132,7 +167,7 @@ export default function() {
     const colourData = JSON.parse(JSON.stringify(DM.userdata));
     colourData.type = DM.userData.nick === WSConnection.options.room_data.creator ? CREATOR : USER;
     colourData.updateTags = [MSG_UPDATE_ID];
-    colourData.updateData = {affectedUser: user, colour: value, time: Date.now()};
+    colourData.updateData = {user: user, colour: value, time: Date.now()};
     DM.send(colourData);
   }
 
