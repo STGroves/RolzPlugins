@@ -61,7 +61,7 @@ export default function () {
     if (!data.detail.mapdata || !data.detail.mapdata.csz)
       return;
 
-    const strVal = String(data.mapdata.sz).replace(".", "_");
+    const strVal = String(data.detail.mapdata.sz).replace(".", "_");
 
     if (customSizes.includes(strVal))
       return;

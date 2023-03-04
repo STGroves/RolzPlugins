@@ -118,13 +118,13 @@ export default function() {
 
   function handleMessageGM(msg) {
     const data = msg.detail.mapdata;
-
-    if (!data.updateTags || data.updateTags.includes(MSG_TAGS.IGNORE) || !data.updateTags.includes(MSG_UPDATE_ID))
-      return;
-
     const from = msg.detail.from;
 
     if (data.type === CREATOR) {
+      if (!data.mapsettings.updateTags ||
+          data.mapsettings.updateTags.includes(MSG_TAGS.IGNORE) ||
+          !data.mapsettings.updateTags.includes(MSG_UPDATE_ID))
+        return;
       const {user, ...colourData} = data.mapsettings.updateData;
       colourObj[user] = colourData;
       WSConnection.options.mappref.chatUI.userData[user] = colourData;
@@ -133,6 +133,10 @@ export default function() {
     }
  
     if (data.type === USER) {
+      if (!data.updateTags ||
+        data.updateTags.includes(MSG_TAGS.IGNORE) ||
+        !data.updateTags.includes(MSG_UPDATE_ID))
+      return;
       const {user, ...colourData} = data.updateData;
       if (data.updateTags.includes(MSG_TAGS.NEW_USER)) {
         colourObj[from] = colourData;
