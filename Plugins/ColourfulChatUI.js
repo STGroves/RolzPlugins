@@ -82,6 +82,8 @@ export default function() {
     TableUI.addHandler("onPromptOpen", '/table/options?room_id=' + encodeURIComponent(WSConnection.options.room_id), loadColoursPage);
   });
 
+  function handleConnection(msg) {}
+
   function handleMessage(msg) {
     if (msg.detail.mapdata.updateTags.includes(MSG_TAGS.IGNORE) || !msg.detail.mapdata.updateTags.includes(MSG_UPDATE_ID))
       return;
