@@ -144,6 +144,7 @@ export default function() {
       colourObj[user] = colourData;
       WSConnection.options.mappref.chatUI.userData[user] = colourData;
 
+      console.log(colourObj);
       data.mapsettings.updateTags.push(MSG_TAGS.IGNORE);
 
       DM.send({type: CREATOR, mapsettings: data.mapsettings});
