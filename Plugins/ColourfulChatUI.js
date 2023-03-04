@@ -117,23 +117,15 @@ export default function() {
   }
 
   function handleMessageGM(msg) {
-    let data;
-    
-    if (msg.detail.mapdata.type === "user_update")
-      data = msg.detail.mapdata;
-    else if (msg.detail.mapdata.type === "creator_update")
-      data = msg.detail.mapdata.mapsettings;
-    else
-      return;
+    const data = msg.detail.mapdata;
 
     if (!data.updateTags || data.updateTags.includes(MSG_TAGS.IGNORE) || !data.updateTags.includes(MSG_UPDATE_ID))
       return;
 
     const from = msg.detail.from;
-    
-    const {user, ...colourData} = data.updateData;
 
     if (data.type === CREATOR) {
+      const {user, ...colourData} = data.mapsettings.updateData;
       colourObj[user] = colourData;
       WSConnection.options.mappref.chatUI.userData[user] = colourData;
       DM.send({type: CREATOR, mapsettings: WSConnection.options.mappref});
@@ -141,6 +133,7 @@ export default function() {
     }
  
     if (data.type === USER) {
+      const {user, ...colourData} = data.updateData;
       if (data.updateTags.includes(MSG_TAGS.NEW_USER)) {
         colourObj[from] = colourData;
         WSConnection.options.mappref.chatUI.userData[from] = colourData;
