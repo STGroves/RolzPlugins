@@ -148,7 +148,7 @@ export default function() {
 			if(e.keyCode == 27) TableUI.close_prompt();
 		});
 
-    activate_tab_opt(document.last_usr_tab);
+    TableUI.addHandler("onpromptopen", url, () => {activate_tab_opt(document.last_usr_tab);})
 	}
 
   TableUI.toggle_prompt = function(url) {
