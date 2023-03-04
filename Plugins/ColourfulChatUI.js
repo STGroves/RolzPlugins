@@ -136,6 +136,9 @@ export default function() {
           data.mapsettings.updateTags.includes(MSG_TAGS.IGNORE) ||
           !data.mapsettings.updateTags.includes(MSG_UPDATE_ID))
         return;
+
+      console.log("Hit!");
+
       const {user, ...colourData} = data.mapsettings.updateData;
       colourObj[user] = colourData;
       WSConnection.options.mappref.chatUI.userData[user] = colourData;
