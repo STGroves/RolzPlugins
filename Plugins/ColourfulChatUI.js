@@ -140,9 +140,7 @@ export default function() {
       console.log("Hit!");
       console.log(data);
 
-      const {user, ...colourData} = data.mapsettings.updateData;
-      colourObj[user] = colourData;
-      WSConnection.options.mappref.chatUI.userData[user] = colourData;
+      colourObj = data.chatUI.userData;
 
       console.log(colourObj);
       data.mapsettings.updateTags.push(MSG_TAGS.IGNORE);
@@ -189,7 +187,7 @@ export default function() {
 
   function updateChatUI(user, value) {
     if (isGM()) {
-      room_mapsettings.updateData = {user: user, colour: value, time: Date.now()};
+      room_mapsettings.chatUI.userData[user] = {colour: value, time: Date.now()};
       room_mapsettings.updateTags = [MSG_UPDATE_ID];
     } else {
       userpref.updateTags = [MSG_UPDATE_ID];
