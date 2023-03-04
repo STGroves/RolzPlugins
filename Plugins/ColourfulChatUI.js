@@ -162,7 +162,7 @@ export default function() {
 
   function updateChatUI(user, value) {
     const colourData = JSON.parse(JSON.stringify(DM.userdata));
-    colourData.type = DM.userData.nick === WSConnection.options.room_data.creator ? CREATOR : USER;
+    colourData.type = isGM() ? CREATOR : USER;
     colourData.updateTags = [MSG_UPDATE_ID];
     colourData.updateData = {user: user, colour: value, time: Date.now()};
     DM.send(colourData);
