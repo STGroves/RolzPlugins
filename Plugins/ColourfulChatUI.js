@@ -119,10 +119,10 @@ export default function() {
   function handleMessageGM(msg) {
     let data;
     
-    if (msg.detail.type === "user_update")
+    if (msg.detail.mapdata.type === "user_update")
       data = msg.detail.mapdata;
-    else if (msg.detail.type === "creator_update")
-      data = msg.detail.mapsettings;
+    else if (msg.detail.mapdata.mapsettings.type === "creator_update")
+      data = msg.detail.mapdata.mapsettings;
     else
       return;
 
