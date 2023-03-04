@@ -117,7 +117,14 @@ export default function() {
   }
 
   function handleMessageGM(msg) {
-    const data = msg.detail.mapdata || msg.detail.mapsettings;
+    let data;
+    
+    if (msg.detail.type === "user_update")
+      data = msg.detail.mapdata;
+    else if (msg.detail.type === "creator_update")
+      data = msg.detail.mapsettings;
+    else
+      return;
 
     if (!data.updateTags || data.updateTags.includes(MSG_TAGS.IGNORE) || !data.updateTags.includes(MSG_UPDATE_ID))
       return;
