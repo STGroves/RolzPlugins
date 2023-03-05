@@ -33,7 +33,7 @@ export default function() {
       const data = JSON.parse(JSON.stringify(DM.userdata));
       data.type = USER;
       data.updateTags = [MSG_UPDATE_ID, MSG_TAGS.GM_ONLY, MSG_TAGS.NEW_USER];
-      DM.send({data});
+      DM.send(data);
     }
   }
   
