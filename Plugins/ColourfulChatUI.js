@@ -119,7 +119,7 @@ export default function() {
       
       if (data.updateTags.includes(MSG_TAGS.NEW_USER) && data.updateTags.includes(MSG_TAGS.ALL)) {
         const {user, ...colourData} = data.updateData;
-        colours[user] = colourData.colour;
+        colourObj[user] = colourData.colour;
 
         if (user === SELF) {
           DM.userdata.custom.chatUI = colourData;
@@ -187,7 +187,7 @@ export default function() {
       const div = document.createElement("div");
       div.innerHTML = `<div class="flex-input">
       <label>${key}</label>
-      <input type="color" style="vertical-align: middle;" value="${value.colour}"/>
+      <input type="color" style="vertical-align: middle;" value="${value}"/>
   </div>`;
       const input = div.querySelector("input[type=color]");
       input.onchange = () => { updateChatUI(key, input.value); }
