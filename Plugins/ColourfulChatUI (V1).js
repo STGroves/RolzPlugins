@@ -12,8 +12,7 @@ export default function() {
   const MSG_TAGS = {
     IGNORE: "IGNORE",
     GM_ONLY: "GM_ONLY",
-    NEW_USER: "NEW_USER",
-    ALL: "ALL"
+    NEW_USER: "NEW_USER"
   };
 
   function isGM() {
@@ -28,16 +27,26 @@ export default function() {
   document.addEventListener("svrmsg", handleConnection);
 
   if (ROOM_CREATOR === SELF) {
-    if (!DM.userdata.custom.chatUI) {
-      DM.userdata.custom.chatUI = {};
-      const data = JSON.parse(JSON.stringify(DM.userdata));
-      data.type = USER;
-      data.updateTags = [MSG_UPDATE_ID, MSG_TAGS.GM_ONLY, MSG_TAGS.NEW_USER];
-      DM.send({data});
+    if (!WSConnection.options.mappref.chatUI) {
+      WSConnection.options.mappref.chatUI = {allowPlayerChoice: false, userData: {}};
+      WSConnection.options.mappref.chatUI.userData[SELF] = {colour: "#418030", time: Date.now()};
+      DM.send({type: CREATOR, mapsettings: WSConnection.options.mappref});
     }
   }
   
-  colourObj[SELF] = DM.userdata.custom.chatUI.userData;
+  if (!WSConnection.options.mappref.chatUI.userData[SELF])
+  {
+    if (isGMPresent())
+    {
+      const userData = JSON.parse(JSON.stringify(DM.userdata));
+      userData.updateTags = [MSG_UPDATE_ID, MSG_TAGS.GM_ONLY, MSG_TAGS.NEW_USER];
+      userData.updateData = {colour: "#418030", time: Date.now()};
+      userData.type = USER;
+      DM.send(userData);
+    }
+  }
+  
+  colourObj = WSConnection.options.mappref.chatUI.userData;
 
   $.each(drTemplateTypes, function(idx, elementId) {
 
@@ -92,6 +101,17 @@ export default function() {
     TableUI.addHandler("onPromptOpen", '/table/options?room_id=' + encodeURIComponent(WSConnection.options.room_id), loadColoursPage);
   });
 
+  DM.data.plugins.addCallbackListener("PluginUtilities/TableUIUtilities", () => {
+    TableUI.addHandler("onPromptClose", '/table/options?room_id=' + encodeURIComponent(WSConnection.options.room_id), () => {
+      delete WSConnection.options.mappref.updateTags;
+      delete WSConnection.options.mappref.updateData;
+      delete room_mapsettings.updateTags;
+      delete room_mapsettings.updateData;
+      delete userpref.updateTags;
+      delete userpref.updateData;
+    })
+  });
+
   function handleConnection(msg) {}
 
   function handleMessageUser(msg) {
@@ -110,31 +130,41 @@ export default function() {
   function handleMessageGM(msg) {
     const data = msg.detail.mapdata;
     const from = msg.detail.from;
+
+    if (data.type === CREATOR) {
+      if (!data.mapsettings.updateTags ||
+          data.mapsettings.updateTags.includes(MSG_TAGS.IGNORE) ||
+          !data.mapsettings.updateTags.includes(MSG_UPDATE_ID))
+        return;
+
+      console.log("Hit!");
+      console.log(data);
+
+      colourObj = data.mapsettings.chatUI.userData;
+
+      console.log(colourObj);
+      data.mapsettings.updateTags.push(MSG_TAGS.IGNORE);
+
+      DM.send({type: CREATOR, mapsettings: data.mapsettings});
+      return;
+    }
  
     if (data.type === USER) {
       if (!data.updateTags ||
         data.updateTags.includes(MSG_TAGS.IGNORE) ||
         !data.updateTags.includes(MSG_UPDATE_ID))
       return;
-      
-      if (data.updateTags.includes(MSG_TAGS.NEW_USER) && data.updateTags.includes(MSG_TAGS.ALL)) {
-        const {user, ...colourData} = data.updateData;
-        colours[user] = colourData.colour;
+      const {user, ...colourData} = data.updateData;
+      if (data.updateTags.includes(MSG_TAGS.NEW_USER)) {
+        colourObj[from] = colourData;
 
-        if (user === SELF) {
-          DM.userdata.custom.chatUI = colourData;
+        delete data.updateTags;
+        delete data.updateData;
+        delete WSConnection.options.mappref.updateTags;
+        delete WSConnection.options.mappref.updateData;
 
-          const data = JSON.parse(JSON.stringify(DM.userdata));
-          data.type = USER;
-
-          DM.send(data);
-        }
-
-      }
-      else if (data.updateTags.includes(MSG_TAGS.NEW_USER)) {
-        data.updateTags = [MSG_UPDATE_ID, MSG_TAGS.ALL, MSG_TAGS.NEW_USER];
-        data.updateData = {user: from, colour: "#418030", time: Date.now()};
-        DM.send(data);
+        WSConnection.options.mappref.chatUI.userData[from] = colourData;
+        DM.send({type: CREATOR, mapsettings: WSConnection.options.mappref});
       }
     }
 
@@ -156,8 +186,13 @@ export default function() {
   }
 
   function updateChatUI(user, value) {
-    userpref.updateTags = [MSG_UPDATE_ID];
-    userpref.updateData = {user: user, colour: value, time: Date.now()};
+    if (isGM()) {
+      room_mapsettings.chatUI.userData[user] = {colour: value, time: Date.now()};
+      room_mapsettings.updateTags = [MSG_UPDATE_ID];
+    } else {
+      userpref.updateTags = [MSG_UPDATE_ID];
+      userpref.updateData = {user: user, colour: value, time: Date.now()};
+    }
   }
 
   function loadColoursPage() {
