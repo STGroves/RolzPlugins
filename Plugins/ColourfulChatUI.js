@@ -49,7 +49,6 @@ export default function() {
   colourObj = WSConnection.options.mappref.chatUI.userData;
 
   $.each(drTemplateTypes, function(idx, elementId) {
-
     var hbRender = Handlebars.compile($(elementId).html());
     drTemplates[idx] = function(msg) {
       if(msg.self && document.currentNick != msg.from) {
@@ -112,7 +111,9 @@ export default function() {
     })
   });
 
-  function handleConnection(msg) {}
+  function handleConnection(msg) {
+    console.log(msg.detail.context);
+  }
 
   function handleMessageUser(msg) {
     const data = msg.detail.mapdata;
@@ -137,13 +138,8 @@ export default function() {
           !data.mapsettings.updateTags.includes(MSG_UPDATE_ID))
         return;
 
-      console.log("Hit!");
-      console.log(data);
-
       colourObj = data.mapsettings.chatUI.userData;
-
-      console.log(colourObj);
-      data.mapsettings.updateTags.push(MSG_TAGS.IGNORE);
+      data.mapsettings.updateTags = [];
 
       DM.send({type: CREATOR, mapsettings: data.mapsettings});
       return;
