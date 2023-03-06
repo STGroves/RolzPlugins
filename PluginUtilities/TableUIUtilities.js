@@ -153,7 +153,7 @@ export default function() {
 
       save_and_close = function() {
         console.log("Custom Hit!");
-        
+
         if(room_creator_changed != room_creator_opt.creator) {
           sendLine('/room transfer '+room_creator_opt.creator);
         }
@@ -169,6 +169,8 @@ export default function() {
           Conference.start_stream_video();
         TableUI.close_prompt();
       }
+
+      $('#prompt-window-save-btn').off().on('click', save_and_close);
     });
 	}
 
