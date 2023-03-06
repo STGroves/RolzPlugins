@@ -206,7 +206,7 @@ export default function() {
     <div class="prompt-section">
         <div class="flex-input">
             <label>Allow Player Choice</label>
-            <input type="checkbox" style="flex: 0;" id="">
+            <input type="checkbox" style="flex: 0;" >
         </div>
     </div>
     <div class="prompt-section-header">Player Colours</div>
