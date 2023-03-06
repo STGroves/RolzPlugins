@@ -1,3 +1,5 @@
+import WSConnectionUtilities from "./WSConnectionUtilities.js";
+
 export default function() {
   TableUI.pane.onOpen = {};
   TableUI.pane.onClose = {};
@@ -152,22 +154,19 @@ export default function() {
       activate_tab_opt(document.last_usr_tab);
 
       save_and_close = function() {
-        console.log("Custom Hit!");
-
-        if(room_creator_changed != room_creator_opt.creator) {
+        if (room_creator_changed != room_creator_opt.creator) {
           sendLine('/room transfer '+room_creator_opt.creator);
         }
+        
         DM.userdata = userpref;
-        var update_msg = JSON.parse(JSON.stringify(userpref));
-        update_msg.type = 'user_update';
-        DM.send(update_msg);
-            DM.send({
-          type : 'creator_update',
-          mapsettings : room_mapsettings,
-        });
-            if(devices_changed && Conference.is_active)
+        
+        DM.send(WSConnectionUtilities.prepareUserSendPacket(userpref));
+        DM.send(WSConnectionUtilities.prepareCreatorSendPacket(room_settings));
+        
+        if(devices_changed && Conference.is_active)
           Conference.start_stream_video();
-        TableUI.close_prompt();
+        
+          TableUI.close_prompt();
       }
 
       $('#prompt-window-save-btn').off().on('click', save_and_close);

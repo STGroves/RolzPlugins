@@ -14,9 +14,19 @@ function isElement(obj) {
   return obj instanceof Element;
 }
 
+function isEmptyObject(obj) {
+  return Object.keys(obj).length === 0;
+}
+
+function isEmptyArray(arr) {
+  return arr.length === 0;
+}
+
 export default {
   isString,
   isNumber,
   isFunction,
-  isElement
+  isElement,
+  isEmptyObject,
+  isEmptyArray
 }
