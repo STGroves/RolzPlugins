@@ -39,7 +39,7 @@ export default function() {
       pluginDataTags.user.push(tag)
   }
 
-  WSConnection.removePluginCreatorTag = function (tag) {
+  WSConnection.addPluginCreatorTag = function (tag) {
     if (!pluginDataTags.creator.includes(tag))
       pluginDataTags.creator.push(tag)
   }
