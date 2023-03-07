@@ -205,7 +205,7 @@ export default function() {
       const div = document.createElement("div");
       div.innerHTML = `<div class="flex-input">
       <label>${key}</label>
-      <input type="color" style="vertical-align: middle;" value="${value.colour}"/>
+      <input type="color" style="height: 100%;" value="${value.colour}"/>
   </div>`;
       const input = div.querySelector("input[type=color]");
       input.onchange = () => { updateChatUI(key, input.value); }
