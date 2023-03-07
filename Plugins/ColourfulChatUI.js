@@ -189,6 +189,12 @@ export default function() {
       baseElement: base
     });
 
+    if (!document.getElementById(MSG_UPDATE_ID) || !document.getElementById(MSG_UPDATE_ID).innerHTML.search(".colourInput")) {
+      createOrUpdateStyle(MSG_UPDATE_ID,`.colourInput {
+        height: inherit;
+      }`);
+    }
+
     content.innerHTML = `<div class="prompt-section-header">Settings</div>
     <div class="prompt-section">
         <div class="flex-input">
@@ -205,7 +211,7 @@ export default function() {
       const div = document.createElement("div");
       div.innerHTML = `<div class="flex-input">
       <label>${key}</label>
-      <input type="color" style="height: 100%;" value="${value.colour}"/>
+      <input type="color" class="colourInput" value="${value.colour}"/>
   </div>`;
       const input = div.querySelector("input[type=color]");
       input.onchange = () => { updateChatUI(key, input.value); }
