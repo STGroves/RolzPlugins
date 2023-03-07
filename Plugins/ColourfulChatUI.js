@@ -1,4 +1,5 @@
 import WindowUtilities from "../PluginUtilities/WindowUtilities.js";
+import HTMLUtilities from "../PluginUtilities/HTMLUtilities.js";
 
 export default function() {
   let colourObj = {};
@@ -190,7 +191,7 @@ export default function() {
     });
 
     if (!document.getElementById(MSG_UPDATE_ID) || !document.getElementById(MSG_UPDATE_ID).innerHTML.search(".colourInput")) {
-      createOrUpdateStyle(MSG_UPDATE_ID,`.colourInput {
+      HTMLUtilities.createOrUpdateStyle(MSG_UPDATE_ID,`.colourInput {
         height: inherit;
       }`);
     }
