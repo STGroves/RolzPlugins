@@ -171,10 +171,10 @@ export default function() {
   function updateChatUI(user, value) {
     if (isGM()) {
       room_mapsettings.chatUI.userData[user] = {colour: value, time: Date.now()};
-      WSConnection.addPluginCreatorDataTag(MSG_UPDATE_ID, MSG_TAGS.GM_ONLY);
+      WSConnection.addPluginCreatorTag(MSG_UPDATE_ID, MSG_TAGS.GM_ONLY);
     } else {
       WSConnection.addPluginUserData(MSG_UPDATE_ID, {user: user, colour: value, time: Date.now()});
-      WSConnection.addPluginUserDataTag(MSG_UPDATE_ID);
+      WSConnection.addPluginUserTag(MSG_UPDATE_ID);
     }
   }
 
