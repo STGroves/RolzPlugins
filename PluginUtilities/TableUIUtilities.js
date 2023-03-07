@@ -160,8 +160,8 @@ export default function() {
         
         DM.userdata = userpref;
         
-        DM.send(WSConnectionUtilities.prepareUserSendPacket(userpref));
-        DM.send(WSConnectionUtilities.prepareCreatorSendPacket(room_settings));
+        DM.send(WSConnection.prepareUserSendPacket(userpref));
+        DM.send(WSConnection.prepareCreatorSendPacket(room_settings));
         
         if(devices_changed && Conference.is_active)
           Conference.start_stream_video();
