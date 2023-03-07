@@ -1,3 +1,5 @@
+import WindowUtilities from "../PluginUtilities/WindowUtilities.js";
+
 export default function() {
   let colourObj = {};
 
