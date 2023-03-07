@@ -67,7 +67,7 @@ export default function() {
   }
 
   WSConnection.filterMessage = function (msg, plugin, allowUntagged, whitelistTags, blacklistTags) {
-    if (!allowUntagged && !msg.details.mapdata.pluginData.user[plugin] && !msg.details.mapdata.pluginData.creator[plugin])
+    if (!allowUntagged && !msg.detail.mapdata.pluginData.user[plugin] && !msg.detail.mapdata.pluginData.creator[plugin])
       return false;
     
     else if (allowUntagged)
