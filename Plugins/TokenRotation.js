@@ -35,7 +35,7 @@ export default function() {
         id: "rotation",
         min: 0,
         max: 360,
-        value: token.r,
+        value: token.r || 0,
         callback: (value) => {
           save_token({r: value});
         }

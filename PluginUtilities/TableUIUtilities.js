@@ -179,4 +179,7 @@ export default function() {
 		else
 			TableUI.open_prompt(url);
 	}
+
+  if (!DM.data.plugins.contains("PluginUtilities/WSConnectionUtilities"))
+    DM.data.plugins.load("PluginUtilities/WSConnectionUtilities");
 }
