@@ -99,8 +99,11 @@ export default function() {
     DM.data.plugins.load("PluginUtilities/TableUIUtilities");
 
   DM.data.plugins.addCallbackListener("PluginUtilities/TableUIUtilities", () => {
-    initiateUser();
     TableUI.addHandler("onPromptOpen", '/table/options?room_id=' + encodeURIComponent(WSConnection.options.room_id), loadColoursPage);
+  });
+
+  DM.data.plugins.addCallbackListener("PluginUtilities/WSConnectionUtilities", () => {
+    initiateUser();
   });
 
   /*DM.data.plugins.addCallbackListener("PluginUtilities/TableUIUtilities", () => {

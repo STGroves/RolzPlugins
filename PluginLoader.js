@@ -48,8 +48,11 @@ function init(plugins) {
     }
   }
 
-  this.addCallbackListener = function(plugin, callback) {
+  this.addCallbackListener = function(plugin, callback, executeIfAlreadyLoaded = false) {
     loaded.find(x => x.plugin === plugin.toLowerCase()).callback.push(callback);
+
+    if (executeIfAlreadyLoaded)
+      callback();
   }
 
   this.contains = function(plugin) {
