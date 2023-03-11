@@ -39,11 +39,10 @@ export default function() {
   {
     if (isGMPresent())
     {
-      const userData = JSON.parse(JSON.stringify(DM.userdata));
-      userData.updateTags = [MSG_UPDATE_ID, MSG_TAGS.GM_ONLY, MSG_TAGS.NEW_USER];
-      userData.updateData = {colour: "#418030", time: Date.now()};
-      userData.type = USER;
-      DM.send(userData);
+      WSConnection.addPluginUserData(MSG_UPDATE_ID, {user: SELF, colour: "#418030", time: Date.now()});
+      WSConnection.addPluginUserTags(MSG_UPDATE_ID, MSG_TAGS.GM_ONLY, MSG_TAGS.NEW_USER);
+      
+      DM.send(WSConnection.prepareUserSendPacket(DM.userdata));
     }
   }
   
@@ -138,13 +137,13 @@ export default function() {
 
     if (data.type === CREATOR) {
       colourObj = data.mapsettings.chatUI.userData;
-      DM.send({type: CREATOR, mapsettings: data.mapsettings, pluginData: data.pluginData, pluginDataTags: data.pluginDataTags});
+      DM.send();
       return;
     }
  
     if (data.type === USER) {
       const {user, ...colourData} = data.pluginData[MSG_UPDATE_ID];
-      if (data.pluginDataTags.user.includes(MSG_TAGS.NEW_USER)) {
+      if (data.pluginData[MSG_UPDATE_ID].user.includes(MSG_TAGS.NEW_USER)) {
         colourObj[from] = colourData;
 
         WSConnection.options.mappref.chatUI.userData[from] = colourData;
@@ -175,7 +174,7 @@ export default function() {
       WSConnection.addPluginCreatorTag(MSG_UPDATE_ID, MSG_TAGS.GM_ONLY);
     } else {
       WSConnection.addPluginUserData(MSG_UPDATE_ID, {user: user, colour: value, time: Date.now()});
-      WSConnection.addPluginUserTag(MSG_UPDATE_ID);
+      //WSConnection.addPluginUserTag(MSG_UPDATE_ID);
     }
   }
 

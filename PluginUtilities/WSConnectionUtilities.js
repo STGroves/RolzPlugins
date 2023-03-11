@@ -29,36 +29,40 @@ export default function() {
     return data;
   }
 
-  WSConnection.addPluginUserTag = function (plugin, tag) {
+  WSConnection.addPluginUserTags = function (plugin, ...tags) {
     if (!pluginData.user[plugin]) {
-      pluginData.user[plugin] = {data: {}, tags:[tag]};
+      pluginData.user[plugin] = {data: {}, tags:[tags]};
       return;
     }
 
     if (!pluginData.user[plugin].tags) {
-      pluginData.user[plugin].tags = [tag];
+      pluginData.user[plugin].tags = [tags];
       return;
     }
 
-    if (!pluginData.user[plugin].tags.includes(tag)) { 
-      pluginData.user[plugin].tags.push(tag)
-    }
+    tags.forEach(tag => {  
+      if (!pluginData.user[plugin].tags.includes(tag)) { 
+        pluginData.user[plugin].tags.push(tag)
+      }
+    });
   }
 
-  WSConnection.addPluginCreatorTag = function (plugin, tag) {
+  WSConnection.addPluginCreatorTags = function (plugin, ...tags) {
     if (!pluginData.creator[plugin]) {
-      pluginData.creator[plugin] = {data: {}, tags:[tag]};
+      pluginData.creator[plugin] = {data: {}, tags:[tags]};
       return;
     }
 
     if (!pluginData.creator[plugin].tags) {
-      pluginData.creator[plugin].tags = [tag];
+      pluginData.creator[plugin].tags = [tags];
       return;
     }
 
-    if (!pluginData.creator[plugin].tags.includes(tag)) { 
-      pluginData.creator[plugin].tags.push(tag)
-    }
+    tags.forEach(tag => {  
+      if (!pluginData.creator[plugin].tags.includes(tag)) { 
+        pluginData.creator[plugin].tags.push(tag)
+      }
+    });
   }
 
   WSConnection.addPluginUserData = function (plugin, data) {
@@ -67,10 +71,7 @@ export default function() {
       return;
     }
 
-    if (!pluginData.user[plugin].data) {
-      pluginData.user[plugin].data = data;
-      return;
-    }
+    pluginData.user[plugin].data = data;
   }
 
   WSConnection.addPluginCreatorData = function (plugin, data) {
@@ -79,10 +80,7 @@ export default function() {
       return;
     }
 
-    if (!pluginData.creator[plugin].data) {
-      pluginData.creator[plugin].data = data;
-      return;
-    }
+    pluginData.creator[plugin].data = data;
   }
 
   WSConnection.getPluginUserData = function (plugin) {
@@ -100,19 +98,23 @@ export default function() {
   }
 
   WSConnection.filterMessage = function (msg, plugin, allowUntagged, whitelistTags, blacklistTags) {
-    if (!allowUntagged && !msg.detail.mapdata.pluginData.user[plugin] && !msg.detail.mapdata.pluginData.creator[plugin])
+    const data = msg.detail.mapdata.pluginData;
+    
+    if (!allowUntagged && data.user[plugin] && data.creator[plugin])
       return false;
     
     else if (allowUntagged)
       return true;
     
     for (const tag in blacklistTags) {
-      if (msg.details.mapdata.pluginDataTags.user.includes(tag) || msg.details.mapdata.pluginDataTags.creator.includes(tag))
+      if (data.user[plugin].tags.includes(tag) ||
+          data.creator[plugin].tags.includes(tag))
         return false;
     }
 
     for (const tag in whitelistTags) {
-      if (msg.details.mapdata.pluginDataTags.user.includes(tag) || msg.details.mapdata.pluginDataTags.creator.includes(tag))
+      if (data.user[plugin].tags.includes(tag) ||
+        data.creator[plugin].tags.includes(tag))
         return true;
     }
 
