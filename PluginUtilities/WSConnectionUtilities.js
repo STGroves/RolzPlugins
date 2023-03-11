@@ -31,12 +31,12 @@ export default function() {
 
   WSConnection.addPluginUserTags = function (plugin, ...tags) {
     if (!pluginData.user[plugin]) {
-      pluginData.user[plugin] = {data: {}, tags:[tags]};
+      pluginData.user[plugin] = {data: {}, tags: tags};
       return;
     }
 
     if (!pluginData.user[plugin].tags) {
-      pluginData.user[plugin].tags = [tags];
+      pluginData.user[plugin].tags = tags;
       return;
     }
 
@@ -49,12 +49,12 @@ export default function() {
 
   WSConnection.addPluginCreatorTags = function (plugin, ...tags) {
     if (!pluginData.creator[plugin]) {
-      pluginData.creator[plugin] = {data: {}, tags:[tags]};
+      pluginData.creator[plugin] = {data: {}, tags: tags};
       return;
     }
 
     if (!pluginData.creator[plugin].tags) {
-      pluginData.creator[plugin].tags = [tags];
+      pluginData.creator[plugin].tags = tags;
       return;
     }
 
