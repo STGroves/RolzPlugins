@@ -1,20 +1,17 @@
 import Utilities from "./Utilities.js";
 
 export default function() {
-  const pluginData = {user: {}, creator: {}};
-  const pluginDataTags = {user: [], creator: []};
+  const pluginData = {};
 
   WSConnection.prepareUserSendPacket = function(packet) {
     const data = {type: "user_update", ...JSON.parse(JSON.stringify(packet))};
 
-    if (Utilities.isEmptyObject(pluginData.user) && Utilities.isEmptyArray(pluginDataTags.user))
+    if (Utilities.isEmptyObject(pluginData))
       return data;
 
     data.pluginData = JSON.parse(JSON.stringify(pluginData.user));
-    data.pluginDataTags = JSON.parse(JSON.stringify(pluginDataTags.user));
 
     pluginData.user = {};
-    pluginDataTags.user = [];
 
     return data;
   }
@@ -22,46 +19,82 @@ export default function() {
   WSConnection.prepareCreatorSendPacket = function(packet) {
     const data = {type: "creator_update", mapsettings: JSON.parse(JSON.stringify(packet))};
 
-    if (Utilities.isEmptyObject(pluginData.creator) && Utilities.isEmptyArray(pluginDataTags.creator))
+    if (Utilities.isEmptyObject(pluginData.creator))
       return data;
 
     data.pluginData = JSON.parse(JSON.stringify(pluginData.creator));
-    data.pluginDataTags = JSON.parse(JSON.stringify(pluginDataTags.creator));
-
+    
     pluginData.creator = {};
-    pluginDataTags.creator = [];
-
+    
     return data;
   }
 
-  WSConnection.addPluginUserTag = function (tag) {
-    if (!pluginDataTags.user.includes(tag))
-      pluginDataTags.user.push(tag)
+  WSConnection.addPluginUserTag = function (plugin, tag) {
+    if (!pluginData.user[plugin]) {
+      pluginData.user[plugin] = {data: {}, tags:[tag]};
+      return;
+    }
+
+    if (!pluginData.user[plugin].tags) {
+      pluginData.user[plugin].tags = [tag];
+      return;
+    }
+
+    if (!pluginData.user[plugin].tags.includes(tag)) { 
+      pluginData.user[plugin].tags.push(tag)
+    }
   }
 
-  WSConnection.addPluginCreatorTag = function (tag) {
-    if (!pluginDataTags.creator.includes(tag))
-      pluginDataTags.creator.push(tag)
+  WSConnection.addPluginCreatorTag = function (plugin, tag) {
+    if (!pluginData.creator[plugin]) {
+      pluginData.creator[plugin] = {data: {}, tags:[tag]};
+      return;
+    }
+
+    if (!pluginData.creator[plugin].tags) {
+      pluginData.creator[plugin].tags = [tag];
+      return;
+    }
+
+    if (!pluginData.creator[plugin].tags.includes(tag)) { 
+      pluginData.creator[plugin].tags.push(tag)
+    }
   }
 
   WSConnection.addPluginUserData = function (plugin, data) {
-    pluginData.user[plugin] = data;
+    if (!pluginData.user[plugin]) {
+      pluginData.user[plugin] = {data: data, tags:[]};
+      return;
+    }
+
+    if (!pluginData.user[plugin].data) {
+      pluginData.user[plugin].data = data;
+      return;
+    }
   }
 
   WSConnection.addPluginCreatorData = function (plugin, data) {
-    pluginData.creator[plugin] = data;
-  }
-  
-  WSConnection.getPluginCreatorData = function (plugin) {
-    if (!!pluginData.creator[plugin])
-      return pluginData.creator[plugin];
-    
-    return undefined;
+    if (!pluginData.creator[plugin]) {
+      pluginData.creator[plugin] = {data: data, tags:[]};
+      return;
+    }
+
+    if (!pluginData.creator[plugin].data) {
+      pluginData.creator[plugin].data = data;
+      return;
+    }
   }
 
   WSConnection.getPluginUserData = function (plugin) {
     if (!!pluginData.user[plugin])
       return pluginData.user[plugin];
+    
+    return undefined;
+  }
+
+  WSConnection.getPluginCreatorData = function (plugin) {
+    if (!!pluginData.creator[plugin])
+      return pluginData.creator[plugin];
     
     return undefined;
   }
