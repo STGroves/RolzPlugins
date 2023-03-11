@@ -148,8 +148,8 @@ export default function() {
     }
  
     if (data.type === USER) {
-      const {user, ...colourData} = data.pluginData[MSG_UPDATE_ID];
-      if (data.pluginData[MSG_UPDATE_ID].user.includes(MSG_TAGS.NEW_USER)) {
+      const {user, ...colourData} = data.pluginData[MSG_UPDATE_ID].data;
+      if (data.pluginData[MSG_UPDATE_ID].tags.includes(MSG_TAGS.NEW_USER)) {
         colourObj[from] = colourData;
 
         WSConnection.options.mappref.chatUI.userData[from] = colourData;
