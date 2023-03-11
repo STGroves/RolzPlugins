@@ -1,7 +1,7 @@
 import Utilities from "./Utilities.js";
 
 export default function() {
-  const pluginData = {};
+  const pluginData = {creator: {}, user: {}};
 
   WSConnection.prepareUserSendPacket = function(packet) {
     const data = {type: "user_update", ...JSON.parse(JSON.stringify(packet))};
