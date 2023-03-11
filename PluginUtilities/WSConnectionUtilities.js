@@ -100,7 +100,7 @@ export default function() {
   WSConnection.filterMessage = function (msg, plugin, allowUntagged, whitelistTags, blacklistTags) {
     const data = msg.detail.mapdata.pluginData;
     
-    if (!allowUntagged && data.user[plugin] && data.creator[plugin])
+    if (!allowUntagged && !data.user[plugin] && !data.creator[plugin])
       return false;
     
     else if (allowUntagged)
@@ -111,6 +111,9 @@ export default function() {
           data.creator[plugin].tags.includes(tag))
         return false;
     }
+
+    if (Utilities.isEmptyArray(whitelistTags))
+      return true;
 
     for (const tag in whitelistTags) {
       if (data.user[plugin].tags.includes(tag) ||
