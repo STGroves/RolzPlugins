@@ -106,7 +106,7 @@ export default function() {
     else if (allowUntagged)
       return true;
     
-    for (const tag in blacklistTags) {
+    for (const [_, tag] in blacklistTags) {
       if (data[plugin].tags.includes(tag))
         return false;
     }
@@ -114,7 +114,7 @@ export default function() {
     if (Utilities.isEmptyArray(whitelistTags))
       return true;
 
-    for (const tag in whitelistTags) {
+    for (const [_, tag] in whitelistTags) {
       if (data[plugin].tags.includes(tag))
         return true;
     }
