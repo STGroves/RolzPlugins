@@ -210,6 +210,11 @@ export default function() {
       }`);
     }
 
+    if (isGM())
+      renderGMPage(content);
+  }
+
+  function renderGMPage(content) {
     content.innerHTML = `<div class="prompt-section-header">Settings</div>
     <div class="prompt-section">
         <div class="flex-input">
@@ -221,10 +226,10 @@ export default function() {
     <div class="prompt-section-header">Player Colours</div>
     <div id="colourSection" class="prompt-section">`;
 
-    const inputSection = base.querySelector("input[type='checkbox']");
+    const inputSection = content.querySelector("input[type='checkbox']");
     inputSection.onchange = () => {updatePlayerChoice(inputSection.value)};
 
-    const colourSection = base.querySelector("#colourSection");
+    const colourSection = content.querySelector("#colourSection");
 
     for (const[key, value] of Object.entries(colourObj)) {
       const div = document.createElement("div");
