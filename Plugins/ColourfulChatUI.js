@@ -129,7 +129,7 @@ export default function() {
   }
 
   function handleMessageGM(msg) {
-    if (WSConnection.filterMessage(msg, MSG_UPDATE_ID, false, [], [MSG_TAGS.IGNORE]))
+    if (!WSConnection.filterMessage(msg, MSG_UPDATE_ID, false, [], [MSG_TAGS.IGNORE]))
       return;
 
     const data = msg.detail.mapdata;
@@ -137,7 +137,8 @@ export default function() {
 
     if (data.type === CREATOR) {
       colourObj = data.mapsettings.chatUI.userData;
-      DM.send();
+      WSConnection.addPluginCreatorData(MSG_UPDATE_ID, colourObj);
+      DM.send(WSConnection.prepareCreatorSendPacket(data.mapsettings));
       return;
     }
  
