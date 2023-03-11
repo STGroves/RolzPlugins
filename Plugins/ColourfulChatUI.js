@@ -1,5 +1,6 @@
 import WindowUtilities from "../PluginUtilities/WindowUtilities.js";
 import HTMLUtilities from "../PluginUtilities/HTMLUtilities.js";
+import Utilities from "../PluginUtilities/Utilities.js";
 
 export default function() {
   let colourObj = {};
@@ -13,7 +14,8 @@ export default function() {
   const MSG_TAGS = {
     IGNORE: "IGNORE",
     GM_ONLY: "GM_ONLY",
-    NEW_USER: "NEW_USER"
+    NEW_USER: "NEW_USER",
+    GM_SETTINGS_UPDATE: "GM_SETTINGS_UPDATE"
   };
 
   function isGM() {
@@ -141,7 +143,9 @@ export default function() {
     const from = msg.detail.from;
 
     if (data.type === CREATOR) {
-      colourObj = data.mapsettings.chatUI.userData;
+      if (!Utilities.isEmptyObject(data.mapsettings.chatUI.userData))
+        colourObj = data.mapsettings.chatUI.userData;
+
       WSConnection.addPluginCreatorTags(MSG_UPDATE_ID, MSG_TAGS.IGNORE);
       DM.send(WSConnection.prepareCreatorSendPacket(data.mapsettings));
       return;
@@ -177,11 +181,16 @@ export default function() {
   function updateChatUI(user, value) {
     if (isGM()) {
       room_mapsettings.chatUI.userData[user] = {colour: value, time: Date.now()};
-      WSConnection.addPluginCreatorTags(MSG_UPDATE_ID, MSG_TAGS.GM_ONLY);
+      WSConnection.addPluginCreatorTags(MSG_UPDATE_ID, MSG_TAGS.GM_SETTINGS_UPDATE);
     } else {
       WSConnection.addPluginUserData(MSG_UPDATE_ID, {user: user, colour: value, time: Date.now()});
       //WSConnection.addPluginUserTag(MSG_UPDATE_ID);
     }
+  }
+
+  function updatePlayerChoice(value) {
+    room_mapsettings.chatUI.allowPlayerChoice = value;
+    WSConnection.addPluginCreatorTags(MSG_UPDATE_ID, MSG_TAGS.GM_SETTINGS_UPDATE);
   }
 
   function loadColoursPage() {
@@ -205,11 +214,15 @@ export default function() {
     <div class="prompt-section">
         <div class="flex-input">
             <label>Allow Player Choice</label>
-            <input type="checkbox" style="flex: 0;" >
+            <input type="checkbox" style="flex: 0;"
+            value=${WSConnection.options.mappref.chatUI.allowPlayerChoice}>
         </div>
     </div>
     <div class="prompt-section-header">Player Colours</div>
     <div id="colourSection" class="prompt-section">`;
+
+    const inputSection = base.querySelector("input[type='checkbox']");
+    inputSection.onchange = () => {updatePlayerChoice(inputSection.value)};
 
     const colourSection = base.querySelector("#colourSection");
 
