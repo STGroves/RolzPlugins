@@ -27,26 +27,28 @@ export default function() {
   document.addEventListener("client-tbl-mapdata", isGM() ? handleMessageGM : handleMessageUser);
   document.addEventListener("svrmsg", handleConnection);
 
-  if (ROOM_CREATOR === SELF) {
-    if (!WSConnection.options.mappref.chatUI) {
-      WSConnection.options.mappref.chatUI = {allowPlayerChoice: false, userData: {}};
-      WSConnection.options.mappref.chatUI.userData[SELF] = {colour: "#418030", time: Date.now()};
-      DM.send({type: CREATOR, mapsettings: WSConnection.options.mappref});
+  function initiateUser() {
+    if (ROOM_CREATOR === SELF) {
+      if (!WSConnection.options.mappref.chatUI) {
+        WSConnection.options.mappref.chatUI = {allowPlayerChoice: false, userData: {}};
+        WSConnection.options.mappref.chatUI.userData[SELF] = {colour: "#418030", time: Date.now()};
+        DM.send({type: CREATOR, mapsettings: WSConnection.options.mappref});
+      }
     }
-  }
-  
-  if (!WSConnection.options.mappref.chatUI.userData[SELF])
-  {
-    if (isGMPresent())
+    
+    if (!WSConnection.options.mappref.chatUI.userData[SELF])
     {
-      WSConnection.addPluginUserData(MSG_UPDATE_ID, {user: SELF, colour: "#418030", time: Date.now()});
-      WSConnection.addPluginUserTags(MSG_UPDATE_ID, MSG_TAGS.GM_ONLY, MSG_TAGS.NEW_USER);
-      
-      DM.send(WSConnection.prepareUserSendPacket(DM.userdata));
+      if (isGMPresent())
+      {
+        WSConnection.addPluginUserData(MSG_UPDATE_ID, {user: SELF, colour: "#418030", time: Date.now()});
+        WSConnection.addPluginUserTags(MSG_UPDATE_ID, MSG_TAGS.GM_ONLY, MSG_TAGS.NEW_USER);
+        
+        DM.send(WSConnection.prepareUserSendPacket(DM.userdata));
+      }
     }
-  }
   
-  colourObj = WSConnection.options.mappref.chatUI.userData;
+    colourObj = WSConnection.options.mappref.chatUI.userData;
+  }
 
   $.each(drTemplateTypes, function(idx, elementId) {
     var hbRender = Handlebars.compile($(elementId).html());
@@ -97,6 +99,7 @@ export default function() {
     DM.data.plugins.load("PluginUtilities/TableUIUtilities");
 
   DM.data.plugins.addCallbackListener("PluginUtilities/TableUIUtilities", () => {
+    initiateUser();
     TableUI.addHandler("onPromptOpen", '/table/options?room_id=' + encodeURIComponent(WSConnection.options.room_id), loadColoursPage);
   });
 
