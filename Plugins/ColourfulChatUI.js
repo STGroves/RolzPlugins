@@ -137,7 +137,7 @@ export default function() {
 
     if (data.type === CREATOR) {
       colourObj = data.mapsettings.chatUI.userData;
-      WSConnection.addPluginCreatorData(MSG_UPDATE_ID, colourObj);
+      WSConnection.addPluginCreatorTags(MSG_UPDATE_ID, MSG_TAGS.IGNORE);
       DM.send(WSConnection.prepareCreatorSendPacket(data.mapsettings));
       return;
     }
