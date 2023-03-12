@@ -214,8 +214,8 @@ export default function() {
     const settingsSection = WindowUtilities.createPromptSection("Settings");
     const playerColoursSection = WindowUtilities.createPromptSection("Player Colours");
 
-    content.appendChild(settingsSection.section);
-    content.appendChild(playerColoursSection.section);
+    content.append(settingsSection.section, settingsSection.sectionContent);
+    content.append(playerColoursSection.section, playerColoursSection.sectionContent);
 
     settingsSection.sectionContent.appendChild(
       WindowUtilities.createPromptCheckbox(

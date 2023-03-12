@@ -28,16 +28,22 @@ function createPromptPage(opts) {
 
 function createPromptSection(title) {
   const headerDiv = document.createElement("div");
-  headerDiv.outerHTML = `<div class="prompt-section-header">${title}</div><div class="prompt-section"></div>`;
-  return {section: headerDiv, sectionContent: headerDiv.lastElementChild};
+  headerDiv.innerText = title;
+  headerDiv.classList.add("promp-section-header");
+  
+  const sectionDiv = document.createElement("div");
+  sectionDiv.classList.add("promp-section");
+
+  return {section: headerDiv, sectionContent: sectionDiv};
 }
 
 function createPromptCheckbox(label, value, callback) {
   const wrapperDiv = document.createElement("div");
-  wrapperDiv.outerHTML = `<div class="flex-input">
-  <label>${label}</label>
-  <input type="checkbox" style="flex: 0;" value=${value}>
-</div>`;
+  wrapperDiv.innerHTML = `<label>${label}</label>
+  <input type="checkbox" style="flex: 0;" value=${value}>`;
+
+  wrapperDiv.classList.add("flex-input");
+
   const input = wrapperDiv.lastElementChild;
   input.onchange = () => {callback(input.value)};
 
@@ -52,10 +58,10 @@ function createPromptColourInput(label, value, callback) {
   };
 
   const wrapperDiv = document.createElement("div");
-  wrapperDiv.outerHTML = `<div class="flex-input">
-  <label>${label}</label>
-  <input type="color" class="colourInput" value="${value}"/>
-</div>`;
+  wrapperDiv.innerHTML = `<label>${label}</label>
+  <input type="color" class="colourInput" value="${value}"/>`;
+
+  wrapperDiv.classList.add("flex-input");
 
   const input = wrapperDiv.lastElementChild;
   input.onchange = () => {callback(label, input.value)};
