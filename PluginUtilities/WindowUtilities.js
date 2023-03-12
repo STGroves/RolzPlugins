@@ -1,4 +1,4 @@
-import HTMLUtilities from "./HTMLUtilities";
+import HTMLUtilities from "./HTMLUtilities.js";
 
 function createPromptPage(opts) {
   const button = document.createElement("a");
