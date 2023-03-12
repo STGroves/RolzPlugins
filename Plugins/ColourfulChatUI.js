@@ -245,7 +245,7 @@ export default function() {
         playerColourSection.sectionContent.appendChild(input)
       else {
         input.disabled = true;
-        partyColourSection.sectionContent.appendChild(input);
+        partyColoursSection.sectionContent.appendChild(input);
       }
     }
   }

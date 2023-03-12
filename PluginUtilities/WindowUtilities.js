@@ -40,12 +40,13 @@ function createPromptSection(title) {
 function createPromptCheckbox(label, value, callback) {
   const wrapperDiv = document.createElement("div");
   wrapperDiv.innerHTML = `<label>${label}</label>
-  <input type="checkbox" style="flex: 0;" value=${value}>`;
+  <input type="checkbox" style="flex: 0;">`;
 
   wrapperDiv.classList.add("flex-input");
 
   const input = wrapperDiv.lastElementChild;
-  input.onchange = () => {callback(input.value)};
+  input.checked = value;
+  input.onchange = () => {callback(input.checked)};
 
   return wrapperDiv;
 }
