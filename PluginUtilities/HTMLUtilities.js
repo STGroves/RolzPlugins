@@ -1,6 +1,6 @@
 import Utilities from "./Utilities.js";
 
-const ID = "PluginCSS";
+const DEFAULT_ID = "PluginCSS";
 
 function createSlider(opts) {
   let sliderRange = document.createElement("input");
@@ -62,8 +62,8 @@ function createSlider(opts) {
     updateTrack(sliderRange, "lightgreen", "transparent");
   };
 
-  if (!document.getElementById(ID) || !document.getElementById(ID).innerHTML.search(".PluginSlider"))
-    createOrUpdateStyle(ID,`.PluginSlider {
+  if (!document.getElementById(DEFAULT_ID) || !document.getElementById(DEFAULT_ID).innerHTML.search(".PluginSlider"))
+    createOrUpdateStyle(DEFAULT_ID,`.PluginSlider {
       -webkit-appearance: none;
       -moz-appearance: none;
       border-radius: 8px;
@@ -95,7 +95,7 @@ function createSlider(opts) {
   let val = (opts.value - opts.min) / (opts.max - opts.min);
   let percent = val * 100;
   
-  createOrUpdateStyle(ID,`#${opts.id} {
+  createOrUpdateStyle(DEFAULT_ID,`#${opts.id} {
     background-image: -webkit-gradient(linear,
       left top, 
       right top, 
@@ -115,24 +115,40 @@ function createSlider(opts) {
   return sliderRange;
 }
 
-function createOrUpdateStyle(ID, cssString, parentElement = null) {
+function styleExists(ID, className) {
+  ID = ID || DEFAULT_ID;
+
+  const style = document.getElementById(ID);
+
+  return (style && style.innerHTML.search(className) > -1)
+}
+
+function createOrUpdateStyle(ID, className, cssInner, parentElement = null) {
   parentElement = parentElement || document.body;
+  ID = ID || DEFAULT_ID;
 
   try {
     if (!Utilities.isElement(parentElement))
       throw "parentElement must be an Element!"
 
+    const newData = `${className} {
+      ${cssInner}
+    }`;
+    
     let style;
 
     if (!document.getElementById(ID)) {
       style = document.createElement("style");
       style.id = ID;
+      style.innerHTML += newData;
       parentElement.appendChild(style);
     } else {
       style = document.getElementById(ID);
+      if (styleExists(ID, className))
+        style.innerHTML.replace(new RegExp(`^ *${className} {0,1}{[^\{\}]+}`), newData);
+      else
+        style.innerHTML += newData;
     }
-
-    style.innerHTML += cssString;
   } catch(e) {
     console.error(e);
   }
@@ -140,5 +156,6 @@ function createOrUpdateStyle(ID, cssString, parentElement = null) {
 
 export default {
   createSlider,
-  createOrUpdateStyle
+  createOrUpdateStyle,
+  styleExists
 }

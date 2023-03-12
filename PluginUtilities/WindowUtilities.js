@@ -1,3 +1,5 @@
+import HTMLUtilities from "./HTMLUtilities";
+
 function createPromptPage(opts) {
   const button = document.createElement("a");
   button.classList.add("tbl-tab-btn");
@@ -24,6 +26,46 @@ function createPromptPage(opts) {
   return pageDiv;
 }
 
+function createPromptSection(title) {
+  const headerDiv = document.createElement("div");
+  headerDiv.innerHTML = `<div class="prompt-section-header">${title}</div><div class="prompt-section"></div>`;
+  return {section: headerDiv, sectionContent: headerDiv.firstElementChild};
+}
+
+function createPromptCheckbox(label, value, callback) {
+  const wrapperDiv = document.createElement("div");
+  wrapperDiv.innerHTML = `<div class="flex-input">
+  <label>${label}</label>
+  <input type="checkbox" style="flex: 0;" value=${value}>
+</div>`;
+  const input = wrapperDiv.lastElementChild;
+  input.onchange = () => {callback(input.value)};
+
+  return wrapperDiv;
+}
+
+function createPromptColourInput(label, value, callback) {
+  if (!HTMLUtilities.styleExists(MSG_UPDATE_ID, ".colourInput")) {
+    HTMLUtilities.createOrUpdateStyle(MSG_UPDATE_ID,`.colourInput {
+      height: inherit;
+    }`);
+  };
+
+  const wrapperDiv = document.createElement("div");
+  wrapperDiv.innerHTML = `<div class="flex-input">
+  <label>${label}</label>
+  <input type="color" class="colourInput" value="${value}"/>
+</div>`;
+
+  const input = wrapperDiv.lastElementChild;
+  input.onchange = () => {callback(label, input.value)};
+
+  return wrapperDiv;
+}
+
 export default {
-  createPromptPage
+  createPromptPage,
+  createPromptSection,
+  createPromptCheckbox,
+  createPromptColourInput
 }

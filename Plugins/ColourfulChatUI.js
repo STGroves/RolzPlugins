@@ -204,42 +204,34 @@ export default function() {
       baseElement: base
     });
 
-    if (!document.getElementById(MSG_UPDATE_ID) || !document.getElementById(MSG_UPDATE_ID).innerHTML.search(".colourInput")) {
-      HTMLUtilities.createOrUpdateStyle(MSG_UPDATE_ID,`.colourInput {
-        height: inherit;
-      }`);
-    }
-
     if (isGM())
       renderGMPage(content);
+    else
+      renderUserPage(content);
   }
 
   function renderGMPage(content) {
-    content.innerHTML = `<div class="prompt-section-header">Settings</div>
-    <div class="prompt-section">
-        <div class="flex-input">
-            <label>Allow Player Choice</label>
-            <input type="checkbox" style="flex: 0;"
-            value=${WSConnection.options.mappref.chatUI.allowPlayerChoice}>
-        </div>
-    </div>
-    <div class="prompt-section-header">Player Colours</div>
-    <div id="colourSection" class="prompt-section">`;
+    const settingsSection = WindowUtilities.createPromptSection("Settings");
+    const playerColoursSection = WindowUtilities.createPromptSection("Player Colours");
 
-    const inputSection = content.querySelector("input[type='checkbox']");
-    inputSection.onchange = () => {updatePlayerChoice(inputSection.value)};
+    content.appendChild(settingsSection.section);
+    content.appendChild(playerColoursSection.section);
 
-    const colourSection = content.querySelector("#colourSection");
-
+    settingsSection.sectionContent.appendChild(
+      WindowUtilities.createPromptCheckbox(
+        "Allow Player Choice",
+        WSConnection.options.mappref.chatUI.allowPlayerChoice,
+        updatePlayerChoice
+      )
+    );
     for (const[key, value] of Object.entries(colourObj)) {
-      const div = document.createElement("div");
-      div.innerHTML = `<div class="flex-input">
-      <label>${key}</label>
-      <input type="color" class="colourInput" value="${value.colour}"/>
-  </div>`;
-      const input = div.querySelector("input[type=color]");
-      input.onchange = () => { updateChatUI(key, input.value); }
-      colourSection.appendChild(div);
+      playerColoursSection.sectionContent.appendChild(
+        WindowUtilities.createPromptColourInput(key, value.colour), updateChatUI
+      );
     }
+  }
+
+  function renderUserPage(content) {
+
   }
 }
