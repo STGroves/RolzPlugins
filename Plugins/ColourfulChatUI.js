@@ -232,6 +232,21 @@ export default function() {
   }
 
   function renderUserPage(content) {
+    const playerColourSection = WindowUtilities.createPromptSection("Player Colour");
+    const partyColoursSection = WindowUtilities.createPromptSection("Party Colours");
 
+    content.append(playerColourSection.section, playerColourSection.sectionContent);
+    content.append(partyColoursSection.section, partyColoursSection.sectionContent);
+
+    for (const[key, value] of Object.entries(colourObj)) {
+      const input = WindowUtilities.createPromptColourInput(key, value.colour, updateChatUI);
+
+      if (key === SELF)
+        playerColourSection.sectionContent.appendChild(input)
+      else {
+        input.disabled = true;
+        partyColourSection.sectionContent.appendChild(input);
+      }
+    }
   }
 }

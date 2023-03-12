@@ -29,10 +29,10 @@ function createPromptPage(opts) {
 function createPromptSection(title) {
   const headerDiv = document.createElement("div");
   headerDiv.innerText = title;
-  headerDiv.classList.add("promp-section-header");
+  headerDiv.classList.add("prompt-section-header");
   
   const sectionDiv = document.createElement("div");
-  sectionDiv.classList.add("promp-section");
+  sectionDiv.classList.add("prompt-section");
 
   return {section: headerDiv, sectionContent: sectionDiv};
 }
