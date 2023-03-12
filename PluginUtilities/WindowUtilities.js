@@ -29,7 +29,7 @@ function createPromptPage(opts) {
 function createPromptSection(title) {
   const headerDiv = document.createElement("div");
   headerDiv.innerHTML = `<div class="prompt-section-header">${title}</div><div class="prompt-section"></div>`;
-  return {section: headerDiv, sectionContent: headerDiv.firstElementChild};
+  return {section: headerDiv, sectionContent: headerDiv.lastElementChild};
 }
 
 function createPromptCheckbox(label, value, callback) {
