@@ -244,7 +244,7 @@ export default function() {
       if (key === SELF)
         playerColourSection.sectionContent.appendChild(input)
       else {
-        input.disabled = true;
+        input.lastElementChild.disabled = true;
         partyColoursSection.sectionContent.appendChild(input);
       }
     }
