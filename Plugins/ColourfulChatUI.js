@@ -226,7 +226,7 @@ export default function() {
     );
     for (const[key, value] of Object.entries(colourObj)) {
       playerColoursSection.sectionContent.appendChild(
-        WindowUtilities.createPromptColourInput(key, value.colour), updateChatUI
+        WindowUtilities.createPromptColourInput(key, value.colour, updateChatUI)
       );
     }
   }
