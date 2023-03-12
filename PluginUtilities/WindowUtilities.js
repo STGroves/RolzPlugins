@@ -34,7 +34,7 @@ function createPromptSection(title) {
 
 function createPromptCheckbox(label, value, callback) {
   const wrapperDiv = document.createElement("div");
-  wrapperDiv.innerHTML = `<div class="flex-input">
+  wrapperDiv.outerHTML = `<div class="flex-input">
   <label>${label}</label>
   <input type="checkbox" style="flex: 0;" value=${value}>
 </div>`;
@@ -52,7 +52,7 @@ function createPromptColourInput(label, value, callback) {
   };
 
   const wrapperDiv = document.createElement("div");
-  wrapperDiv.innerHTML = `<div class="flex-input">
+  wrapperDiv.outerHTML = `<div class="flex-input">
   <label>${label}</label>
   <input type="color" class="colourInput" value="${value}"/>
 </div>`;
