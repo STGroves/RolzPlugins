@@ -45,8 +45,8 @@ function createPromptCheckbox(label, value, callback) {
 }
 
 function createPromptColourInput(label, value, callback) {
-  if (!HTMLUtilities.styleExists(MSG_UPDATE_ID, ".colourInput")) {
-    HTMLUtilities.createOrUpdateStyle(MSG_UPDATE_ID,`.colourInput {
+  if (!HTMLUtilities.styleExists(undefined, ".colourInput")) {
+    HTMLUtilities.createOrUpdateStyle(undefined,`.colourInput {
       height: inherit;
     }`);
   };
