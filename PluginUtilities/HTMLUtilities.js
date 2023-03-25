@@ -1,9 +1,9 @@
 import Utilities from "./Utilities.js";
-
-const DEFAULT_ID = "PluginCSS";
+import GradientEditor from "../Controls/Gradient Editor/GradientEditor.js"
+import PluginLoader from "../PluginLoader.js"
 
 function createSlider(opts) {
-  let sliderRange = document.createElement("input");
+  const sliderRange = document.createElement("input");
 
   let isSnapping = false;
   
@@ -115,6 +115,56 @@ function createSlider(opts) {
   return sliderRange;
 }
 
+function createGradientEditor(opts) {
+  const editor = new GradientEditor(opts);
+
+  if (!!opts.loadData)
+    editor.load(opts.loadData);
+
+  return editor;
+}
+
+function createSelection(opts) {
+  let oldValue;
+
+  const selection = document.createElement("select");
+
+  for (const [key, value] of Object.entries(opts.options)) {
+    const option = document.createElement("option");
+
+    option.value = key;
+    option.innerText = value.label;
+
+    selection.appendChild(option);
+  }
+
+  selection.value = opts.defaultValue;
+  oldValue = selection.value;
+  
+  selection.addEventListener("change", (event) => {
+    if (!!opts.options[oldValue] && !!opts.options[oldValue].callbacks) {
+      const hiddenCB = opts.options[oldValue].callbacks.hidden;
+      
+      if (!!hiddenCB)
+        hiddenCB(event);
+    }
+    
+    if (!!opts.options[event.target.value].callbacks) {
+      const visibleCB = opts.options[event.target.value].callbacks.visible;
+
+      if (!!visibleCB)
+        visibleCB(event);
+    }
+    
+    oldValue = event.target.value;
+    
+    if(!!opts.valueChanged)
+      opts.valueChanged(event);
+  });
+
+  return selection;
+}
+
 function styleExists(ID, className) {
   ID = ID || DEFAULT_ID;
 
@@ -125,7 +175,7 @@ function styleExists(ID, className) {
 
 function createOrUpdateStyle(ID, className, cssInner, parentElement = null) {
   parentElement = parentElement || document.body;
-  ID = ID || DEFAULT_ID;
+  ID = ID || PluginLoader.DEFAULT_CSS_ID;
 
   try {
     if (!Utilities.isElement(parentElement))
@@ -156,6 +206,8 @@ function createOrUpdateStyle(ID, className, cssInner, parentElement = null) {
 
 export default {
   createSlider,
+  createGradientEditor,
+  createSelection,
   createOrUpdateStyle,
   styleExists
 }

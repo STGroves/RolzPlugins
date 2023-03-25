@@ -1,0 +1,70 @@
+:root {
+	--handle-border: 2px;
+	--handle-colour: lightgreen;
+	--inset: 20px;
+	--handle-width: 10px;
+	--handle-input-width: 40px;
+	--gradient-height: 30px;
+}
+
+.handle {
+	border: var(--handle-colour) solid var(--handle-border);
+	border-radius: 3px;
+	box-sizing: border-box;
+	z-index: 1000;
+	position: absolute;
+	top: 0;
+	height: var(--gradient-height);
+	width: var(--handle-width);
+	padding: 0;
+	margin: 0;
+}
+
+.gradientBackground {
+	top: var(--handle-border);
+	bottom: var(--handle-border);
+	left: var(--inset);
+	right: var(--inset);
+	position: absolute;
+	border: var(--handle-colour) solid var(--handle-border);
+	box-sizing: border-box;
+}
+
+.handleWrapperInput {
+	position: relative;
+	top: var(--gradient-height);
+	left: calc(((var(--handle-input-width) / 2) - (var(--handle-width) / 4)) * -1);
+	width: var(--handle-input-width);
+	display: block;
+	box-sizing: border-box;
+}
+
+.handleInput {
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	box-sizing: border-box;
+}
+
+.handleInput::-webkit-outer-spin-button,
+.handleInput::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+.handleColour {
+	border: none;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+}
+
+.handleColour::-webkit-color-swatch-wrapper {
+	padding: 0;
+	border-radius: 0;
+}
+
+.handleColour::-webkit-color-swatch {
+	border: none;
+}

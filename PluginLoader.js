@@ -1,75 +1,80 @@
-function init(plugins) {
-  let loaded = [];
-  const elem = document.getElementsByTagName("body")[0];
-  document.onMessage = (msg) => {
-    if (msg.type === "keep-alive-return")
-      return;
+import PluginServerHandler from "./PluginServerHandler.js";
 
-    const {type, ...data} = msg;
+let loaded = [];
+const elem = document.body.firstElementChild;
 
-    document.dispatchEvent(new CustomEvent(type, {detail: data}));
-  }
+const DEFAULT_CSS_ID = "DefaultPluginCSS";
 
-  this.load = function(path) {
-    try {
-      const lowerPath = path.toLowerCase();
-      const foundPlugin = loaded.find(x => x.plugin === lowerPath);
-      
-      if (!!foundPlugin) {
-        if (foundPlugin.status === "Loading")
+function load(path) {
+  try {
+    const lowerPath = path.toLowerCase();
+    const foundPlugin = loaded.find(x => x.plugin === lowerPath);
+    
+    if (!!foundPlugin) {
+      switch(foundPlugin.status) {
+        case "Loading":
           throw `${path} is already loading!`;
-        else if (foundPlugin.status === "Loaded")
+
+        case "Loaded":
           throw `${path} has already been loaded!`;
-        else
+
+        default:
           throw 'Unknown Status';
       }
-
-      const scriptElem = document.createElement("script");
-      scriptElem.type = "module";
-      scriptElem.src = `https://stgroves.github.io/RolzPlugins/${path}.js`;
-      scriptElem.onload = async () => {
-        try {
-          const script = await import(`https://stgroves.github.io/RolzPlugins/${path}.js`);
-          script.default();
-          
-          const foundPlugin = loaded.find(x => x.plugin === lowerPath);
-          foundPlugin.status = "Loaded";
-          foundPlugin.callback.forEach(x => x());
-        } catch(e) {
-          loaded.splice(loaded.findIndex(x => x.plugin === lowerPath), 1);
-          console.error(e);
-        }
-      }
-      elem.insertBefore(scriptElem, elem.lastChild);
-
-      loaded.push({plugin: lowerPath, status: "Loading", callback: []});
-    } catch (e) {
-      console.error(e);
     }
-  }
 
-  this.addCallbackListener = function(plugin, callback, executeIfAlreadyLoaded = false) {
-    loaded.find(x => x.plugin === plugin.toLowerCase()).callback.push(callback);
+    const scriptElem = document.createElement("script");
+    scriptElem.type = "module";
+    scriptElem.src = `https://stgroves.github.io/RolzPlugins/${path}.js`;
+    scriptElem.onload = async () => {
+      try {
+        const script = await import(`https://stgroves.github.io/RolzPlugins/${path}.js`);
+        script.default();
+        
+        const foundPlugin = loaded.find(x => x.plugin === lowerPath);
+        foundPlugin.status = "Loaded";
+        foundPlugin.callback.forEach(x => x());
+      } catch(e) {
+        loaded.splice(loaded.findIndex(x => x.plugin === lowerPath), 1);
+        console.error(e);
+      }
+    }
+    elem.insertBefore(scriptElem, elem.lastChild);
 
-    if (executeIfAlreadyLoaded)
-      callback();
+    loaded.push({plugin: lowerPath, status: "Loading", callback: []});
+  } catch (e) {
+    console.error(e);
   }
+}
 
-  this.contains = function(plugin) {
-    return loaded.findIndex(x => x.plugin === plugin.toLowerCase()) > -1;
-  }
+function addCallbackListener(plugin, callback, executeIfAlreadyLoaded = false) {
+  loaded.find(x => x.plugin === plugin.toLowerCase()).callback.push(callback);
 
-  this.getStatus = function(plugin) {
-    return loaded.find(x => x.plugin === plugin.toLowerCase()).status;
-  }
+  if (executeIfAlreadyLoaded)
+    callback();
+}
+
+function contains(plugin) {
+  return loaded.findIndex(x => x.plugin === plugin.toLowerCase()) > -1;
+}
+
+function getStatus(plugin) {
+  return loaded.find(x => x.plugin === plugin.toLowerCase()).status;
+}
+
+function init(plugins) {
+  PluginServerHandler.init();
 
   plugins.forEach(value => {
-    this.load(value);
+    load(value);
   });
-
-  return this;
 }
 
 export default {
-  init
+  init,
+  load,
+  addCallbackListener,
+  getStatus,
+  contains,
+  DEFAULT_CSS_ID
 }

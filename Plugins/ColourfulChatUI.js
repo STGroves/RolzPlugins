@@ -1,49 +1,46 @@
 import WindowUtilities from "../PluginUtilities/WindowUtilities.js";
-import HTMLUtilities from "../PluginUtilities/HTMLUtilities.js";
+import PartyListUtilities from "../PluginUtilities/PartyListUtilities.js";
 import Utilities from "../PluginUtilities/Utilities.js";
+import PluginServerHandler from "../PluginServerHandler.js";
+import HTMLUtilities from "../PluginUtilities/HTMLUtilities.js";
+import PluginLoader from "../PluginLoader.js";
+import GradientPresets from "../PluginUtilities/GradientPresets.js";
 
 export default function() {
   let colourObj = {};
 
   const CREATOR = "creator_update";
   const USER = "user_update";
-  const SELF = WSConnection.options.nick;
-  const ROOM_CREATOR = WSConnection.options.room_data.creator;
 
   const MSG_UPDATE_ID = "chatUI";
   const MSG_TAGS = {
     IGNORE: "IGNORE",
-    GM_ONLY: "GM_ONLY",
     NEW_USER: "NEW_USER",
     GM_SETTINGS_UPDATE: "GM_SETTINGS_UPDATE"
   };
 
-  function isGM() {
-    return ROOM_CREATOR === SELF;
-  }
-
-  function isGMPresent() {
-    return Object.entries(PartyList.members).find(x => x[1].nick === WSConnection.options.room_data.creator) !== undefined;
-  }
-
-  document.addEventListener("client-tbl-mapdata", isGM() ? handleMessageGM : handleMessageUser);
+  if (isGM())
+    document.addEventListener(PluginServerHandler.getMessageIDs().CLIENT_TO_SERVER, handleMessageGM);
+  else
+    document.addEventListener(PluginServerHandler.getMessageIDs().SERVER_TO_CLIENT, handleMessageUser);
+  
   document.addEventListener("svrmsg", handleConnection);
 
   function initiateUser() {
-    if (ROOM_CREATOR === SELF) {
+    if (PartyListUtilities.isGM()) {
       if (!WSConnection.options.mappref.chatUI) {
         WSConnection.options.mappref.chatUI = {allowPlayerChoice: false, userData: {}};
-        WSConnection.options.mappref.chatUI.userData[SELF] = {colour: "#418030", time: Date.now()};
+        WSConnection.options.mappref.chatUI.userData[PartyListUtilities.SELF] = {colour: "#418030", time: Date.now()};
         DM.send({type: CREATOR, mapsettings: WSConnection.options.mappref});
       }
     }
     
-    if (!WSConnection.options.mappref.chatUI.userData[SELF])
+    if (!WSConnection.options.mappref.chatUI.userData[PartyListUtilities.SELF])
     {
-      if (isGMPresent())
+      if (PartyListUtilities.isGMPresent())
       {
         WSConnection.addPluginUserData(MSG_UPDATE_ID, {user: SELF, colour: "#418030", time: Date.now()});
-        WSConnection.addPluginUserTags(MSG_UPDATE_ID, MSG_TAGS.GM_ONLY, MSG_TAGS.NEW_USER);
+        WSConnection.addPluginUserTags(MSG_UPDATE_ID, MSG_TAGS.NEW_USER);
         
         DM.send(WSConnection.prepareUserSendPacket(DM.userdata));
       }
@@ -89,7 +86,7 @@ export default function() {
         return div.innerHTML;
 
       span.classList.remove("username");
-      span.style.color = colourObj[msg.from].colour;
+      span.style = colourObj[msg.from].css;
       span.style.fontWeight = "bold";
 
       return div.innerHTML;
@@ -159,6 +156,8 @@ export default function() {
         WSConnection.options.mappref.chatUI.userData[from] = colourData;
         DM.send({type: CREATOR, mapsettings: WSConnection.options.mappref});
       }
+
+      /**TO-DO: User update colour */
     }
 
     /*const found = Object.entries(PartyList.members).find(x => x[1].nick === from)[1];
@@ -179,11 +178,11 @@ export default function() {
   }
 
   function updateChatUI(user, value) {
-    if (isGM()) {
-      room_mapsettings.chatUI.userData[user] = {colour: value, time: Date.now()};
+    if (PartyListUtilities.isGM()) {
+      room_mapsettings.chatUI.userData[user] = {...value, time: Date.now()};
       WSConnection.addPluginCreatorTags(MSG_UPDATE_ID, MSG_TAGS.GM_SETTINGS_UPDATE);
     } else {
-      WSConnection.addPluginUserData(MSG_UPDATE_ID, {user: user, colour: value, time: Date.now()});
+      WSConnection.addPluginUserData(MSG_UPDATE_ID, {user: user, ...value, time: Date.now()});
       //WSConnection.addPluginUserTag(MSG_UPDATE_ID);
     }
   }
@@ -194,7 +193,7 @@ export default function() {
   }
 
   function loadColoursPage() {
-    if (!WSConnection.options.mappref.chatUI.allowPlayerChoice && SELF !== ROOM_CREATOR)
+    if (!WSConnection.options.mappref.chatUI.allowPlayerChoice && !PartyListUtilities.isGM())
       return;
     
     const base = document.getElementById("prompt-window");
@@ -204,7 +203,7 @@ export default function() {
       baseElement: base
     });
 
-    if (isGM())
+    if (PartyListUtilities.isGM())
       renderGMPage(content);
     else
       renderUserPage(content);
@@ -241,12 +240,225 @@ export default function() {
     for (const[key, value] of Object.entries(colourObj)) {
       const input = WindowUtilities.createPromptColourInput(key, value.colour, updateChatUI);
 
-      if (key === SELF)
+      if (key === PartyListUtilities.SELF)
         playerColourSection.sectionContent.appendChild(input)
       else {
         input.lastElementChild.disabled = true;
         partyColoursSection.sectionContent.appendChild(input);
       }
     }
+  }
+
+  function createColourSelection(label, value) {
+    if (!HTMLUtilities.styleExists(PluginLoader.DEFAULT_CSS_ID, "flexHor"))
+      HTMLUtilities.createOrUpdateStyle(PluginLoader.DEFAULT_CSS_ID, "flexHor", `
+        display: flex;
+        align-items: stretch;
+        column-gap: 5px;
+        padding: 0;
+        height: 40px;
+        width: 100%;
+        margin: 5px 0;
+      `);
+  
+    if (!HTMLUtilities.styleExists(PluginLoader.DEFAULT_CSS_ID, "selectionFlex"))
+      HTMLUtilities.createOrUpdateStyle(PluginLoader.DEFAULT_CSS_ID, "selectionFlex", `
+        position: relative;
+        height: 100%;
+        width: 100%;
+      `);
+  
+    if (!HTMLUtilities.styleExists(PluginLoader.DEFAULT_CSS_ID, "hideInput"))
+      HTMLUtilities.createOrUpdateStyle(PluginLoader.DEFAULT_CSS_ID, "hideInput", `
+        display: none !important;
+      `);
+  
+    if (!HTMLUtilities.styleExists(PluginLoader.DEFAULT_CSS_ID, "tempUsernameFlex"))
+      HTMLUtilities.createOrUpdateStyle(PluginLoader.DEFAULT_CSS_ID, "tempUsernameFlex", `
+        flex: 1;
+        text-align: center;
+        align-self: center;
+        font-weight: bold;
+        font-size: 24px;
+        font-family: helvetica, Tahoma, Arial;
+      `);
+  
+    if (!HTMLUtilities.styleExists(PluginLoader.DEFAULT_CSS_ID, "tempUsername"))
+      HTMLUtilities.createOrUpdateStyle(PluginLoader.DEFAULT_CSS_ID, "tempUsername", `
+        line-height: 0.75em;
+        padding: 0;
+        padding-bottom: 0.2em;
+        margin: auto;
+        display: block;
+        width: fit-content;
+      `);
+  
+    const {wrapperDiv, contentDiv} = WindowUtilities.createPromptEmptyDiv(label);
+    
+    const line1 = document.createElement("div");
+    line1.classList.add("flexHor");
+  
+    const line2 = document.createElement("div");
+    line2.classList.add("flexHor");
+  
+    contentDiv.append(line1, line2);
+  
+    const previewDiv = document.createElement("div");
+    previewDiv.classList.add("tempUsernameFlex");
+  
+    const previewSpan = document.createElement("span");
+    previewSpan.innerHTML = `${label} <span>|</span> ${PartyListUtilities.findUser(label).character}`
+  
+    previewSpan.classList.add("tempUsername");
+  
+    previewDiv.appendChild(previewSpan);
+  
+    const selections = {};
+  
+    if (value.selection === "default") {
+      previewSpan.style.background = "#418030";
+    }
+  
+    const colour = document.createElement("input");
+    colour.type = "color";
+    colour.style.height = "40px";
+  
+    colour.addEventListener("input", (event) => {
+      previewSpan.setAttribute("style", `background: ${event.target.value}; -webkit-background-clip: text;`);
+      updateChatUI(label, {css: previewSpan.style, selection: "colour"});
+    });
+  
+    const gradientData = {
+      handleWidth: 10,
+      handleInputWidth: 40,
+      editorHeight: 30,
+      handleBorder: 2
+    }
+  
+    const gradientDiv = document.createElement("div");
+    line2.style.height = `${10 + (gradientData.editorHeight * 2)}px`;
+    
+    gradientData.parent = gradientDiv;
+  
+    const gradientEditor = HTMLUtilities.createGradientEditor(gradientData);
+  
+    gradientEditor.getHTML().addEventListener("draw", (event) => {
+      previewSpan.setAttribute("style", `background: ${event.detail}; -webkit-background-clip: text;`);
+      updateChatUI(label, {css: previewSpan.style, selection: "gradient"});
+    });
+  
+    const arr = Object.keys(GradientPresets).sort();
+  
+    const obj = {options: {}};
+  
+    arr.forEach((x) => {
+      obj.options[x] = {
+        label: Utilities.toTitleCase(x.replaceAll("_", " "))
+      }
+    });
+  
+    obj.defaultValue = Object.keys(obj.options)[0];
+    obj.valueChanged = (event) => {
+      previewSpan.setAttribute("style", `background: ${GradientPresets[event.target.value]}; -webkit-background-clip: text;`);
+      updateChatUI(label, {css: previewSpan.style, selection: "preset"});
+    }
+    
+    const presetSelect = HTMLUtilities.createSelection(obj);
+    presetSelect.style.height = "40px";
+  
+    line2.append(colour, gradientDiv, presetSelect);
+  
+    const elements = {
+      solid: {
+        html: colour,
+        callback: () => {
+          colour.value = value.css;
+        }
+      },
+      gradient: {
+        html: gradientDiv,
+        callback: () => {
+          gradientData.loadData = value.css;
+        }
+      },
+      preset: {
+        html: presetSelect,
+        callback: () => {
+          const flatArr = Object.entries(GradientPresets).flat();
+          presetSelect.value = flatArr[flatArr.findIndex(x => x === value.css) - 1];
+        }
+      }
+    };
+  
+    for (const [propKey, propValue] of Object.entries(elements)) {
+      propValue.html.classList.add("selectionFlex");
+  
+      if (propKey === value.selection)
+        propValue.callback();
+
+      else
+        propValue.html.classList.add("hideInput");
+    }
+  
+    const colourTypeOptions = {
+      options: {
+        default: {
+          label: "Default",
+          callbacks: {
+            visible: () => {
+              previewSpan.setAttribute("style", `background: #418030; -webkit-background-clip: text;`);
+              updateChatUI(label, {css: previewSpan.style, selection: "default"});
+            }
+          }
+        },
+        solid: {
+          label: "Solid",
+          callbacks: {
+            visible: () => {
+              previewSpan.setAttribute("style", `background: ${colour.value}; -webkit-background-clip: text;`);
+              colour.classList.remove("hideInput");
+            },
+            hidden: () => {
+              colour.classList.add("hideInput");
+            }
+          }
+        },
+        gradient: {
+          label: "Gradient",
+          callbacks: {
+            visible: () => {
+              gradientDiv.classList.remove("hideInput");
+              gradientEditor.Visible = true;
+            },
+            hidden: () => {
+              gradientDiv.classList.add("hideInput");
+              gradientEditor.Visible = false;
+            }
+          }
+        },
+        preset: {
+          label: "Preset",
+          callbacks: {
+            visible: () => {
+              previewSpan.setAttribute("style", `background: ${GradientPresets[presetSelect.value]}; -webkit-background-clip: text;`);
+              presetSelect.classList.remove("hideInput");
+            },
+            hidden: () => {
+              presetSelect.classList.add("hideInput");
+            }
+          }
+        }
+      },
+      defaultValue: value.selection
+    };
+    
+    const colourType = HTMLUtilities.createSelection(colourTypeOptions);
+    colourType.style.flex = "0.5";
+    
+    line1.append(colourType, previewDiv);
+    
+    colourTypeOptions.options[value.selection].callbacks.visible();
+
+    return wrapperDiv;
   }
 }

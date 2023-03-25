@@ -70,9 +70,22 @@ function createPromptColourInput(label, value, callback) {
   return wrapperDiv;
 }
 
+function createPromptEmptyDiv(label, id = "") {
+  const wrapperDiv = document.createElement("div");
+  wrapperDiv.classList.add("flex-input");
+  wrapperDiv.innerHTML = `<label>${label}</label>`;
+  
+  const contentDiv = document.createElement("div");
+  contentDiv.id = id;
+  wrapperDiv.appendChild(contentDiv);
+
+  return { wrapper: wrapperDiv, contentDiv: contentDiv };
+}
+
 export default {
   createPromptPage,
   createPromptSection,
   createPromptCheckbox,
-  createPromptColourInput
+  createPromptColourInput,
+  createPromptEmptyDiv
 }
