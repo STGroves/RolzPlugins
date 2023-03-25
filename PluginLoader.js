@@ -62,8 +62,9 @@ function getStatus(plugin) {
   return loaded.find(x => x.plugin === plugin.toLowerCase()).status;
 }
 
-function init(plugins) {
-  PluginServerHandler.init();
+function init(plugins, initServer = true) {
+  if (initServer)
+    PluginServerHandler.init();
 
   plugins.forEach(value => {
     load(value);

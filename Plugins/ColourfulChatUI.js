@@ -19,7 +19,7 @@ export default function() {
     GM_SETTINGS_UPDATE: "GM_SETTINGS_UPDATE"
   };
 
-  if (isGM())
+  if (PartyListUtilities.isGM())
     document.addEventListener(PluginServerHandler.getMessageIDs().CLIENT_TO_SERVER, handleMessageGM);
   else
     document.addEventListener(PluginServerHandler.getMessageIDs().SERVER_TO_CLIENT, handleMessageUser);
