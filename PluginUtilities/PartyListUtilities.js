@@ -1,22 +1,23 @@
-const SELF = WSConnection.options.nick;
-const ROOM_CREATOR = WSConnection.options.room_data.creator;
+export default function () {
+  const selfThis = this;
 
-function isGM() {
-  return ROOM_CREATOR === SELF;
-}
+  Object.defineProperty(selfThis, "SELF", {
+    get: function() { return WSConnection.options.nick }
+  });
 
-function isGMPresent() {
-  return Object.entries(PartyList.members).find(x => x[1].nick === WSConnection.options.room_data.creator) !== undefined;
-}
+  Object.defineProperty(selfThis, "ROOM_CREATOR", {
+    get: function() { return WSConnection.options.room_data.creator }
+  });
 
-function findUser(username) {
-  return Object.values(PartyList.members).find(x => x.nick === username);
-}
+  this.isGM = function () {
+    return this.ROOM_CREATOR === this.SELF;
+  }
 
-export default {
-  isGM,
-  isGMPresent,
-  findUser,
-  SELF,
-  ROOM_CREATOR
+  this.isGMPresent = function () {
+    return Object.entries(PartyList.members).find(x => x[1].nick === this.ROOM_CREATOR) !== undefined;
+  }
+
+  this.findUser = function (username) {
+    return Object.values(PartyList.members).find(x => x.nick === username);
+  }
 }
