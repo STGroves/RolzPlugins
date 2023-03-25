@@ -8,7 +8,7 @@ export default function() {
   DM.tools.tokens.edit_properties = function(id) {
     DM.selected_id = id;
     if (!TableUI.pane.onOpen.hasOwnProperty('tbl_prop_edit') || !TableUI.pane.onOpen['tbl_prop_edit'].includes(addRotationSlider))
-      TableUI.pane.addHandler("onOpen", 'tbl_prop_edit', addRotationSlider);
+      TableUI.pane.addHandler("open", 'tbl_prop_edit', addRotationSlider);
 
     TableUI.pane.open(
       {

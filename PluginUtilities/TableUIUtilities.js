@@ -1,5 +1,3 @@
-import WSConnectionUtilities from "./WSConnectionUtilities.js";
-
 export default function() {
   TableUI.pane.onOpen = {};
   TableUI.pane.onClose = {};
@@ -11,14 +9,14 @@ export default function() {
     const actualType = type.toLowerCase();
 
     switch (actualType) {
-      case "onopen":
+      case "open":
         if (!TableUI.pane.onOpen.hasOwnProperty(id))
           TableUI.pane.onOpen[id] = [];
 
         TableUI.pane.onOpen[id].push(callback);
         break;
       
-      case "onclose":
+      case "close":
         if (!TableUI.pane.onClose.hasOwnProperty(id))
           TableUI.pane.onClose[id] = [];
 
@@ -31,14 +29,14 @@ export default function() {
     const actualType = type.toLowerCase();
 
     switch (actualType) {
-      case "onpromptopen":
+      case "promptopen":
         if (!TableUI.onPromptOpen.hasOwnProperty(url))
           TableUI.onPromptOpen[url] = [];
 
         TableUI.onPromptOpen[url].push(callback);
         break;
       
-      case "onpromptclose":
+      case "promptclose":
         if (!TableUI.onPromptClose.hasOwnProperty(url))
           TableUI.onPromptClose[url] = [];
 
@@ -150,7 +148,7 @@ export default function() {
 			if(e.keyCode == 27) TableUI.close_prompt();
 		});
 
-    TableUI.addHandler("onpromptopen", url, () => {
+    TableUI.addHandler("promptopen", url, () => {
       activate_tab_opt(document.last_usr_tab);
 
       save_and_close = function() {

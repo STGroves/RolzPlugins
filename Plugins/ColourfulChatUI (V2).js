@@ -89,7 +89,7 @@ export default function() {
     DM.data.plugins.load("PluginUtilities/TableUIUtilities");
 
   DM.data.plugins.addCallbackListener("PluginUtilities/TableUIUtilities", () => {
-    TableUI.addHandler("onPromptOpen", '/table/options?room_id=' + encodeURIComponent(WSConnection.options.room_id), loadColoursPage);
+    TableUI.addHandler("promptOpen", '/table/options?room_id=' + encodeURIComponent(WSConnection.options.room_id), loadColoursPage);
   });
 
   function handleConnection(msg) {}

@@ -14,7 +14,7 @@ export default function () {
     PluginLoader.load("PluginUtilities/TableUIUtilities");
 
   PluginLoader.addCallbackListener("PluginUtilities/TableUIUtilities", () => {
-    TableUI.pane.addHandler("onOpen", 'tbl_prop_edit', addResizeInput);
+    TableUI.pane.addHandler("open", 'tbl_prop_edit', addResizeInput);
   })
 
   HTMLUtilities.createOrUpdateStyle("TokenResizerCSS", `  .NoOutline:focus {
