@@ -20,4 +20,6 @@ export default function () {
   this.findUser = function (username) {
     return Object.values(PartyList.members).find(x => x.nick === username);
   }
+
+  return this;
 }
