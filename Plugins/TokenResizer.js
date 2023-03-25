@@ -1,4 +1,5 @@
 import HTMLUtilities from "../PluginUtilities/HTMLUtilities.js";
+import PluginLoader from "../PluginLoader.js";
 
 export default function () {
   const defaultSizes = ["1", "1_5", "2", "3", "4"];
@@ -9,10 +10,10 @@ export default function () {
   document.addEventListener("client-tbl-mapdata", updateCSS);
   DM.map_pane[0].addEventListener("wheel", loadCSS);
 
-  if (!DM.data.plugins.contains("PluginUtilities/TableUIUtilities"))
-    DM.data.plugins.load("PluginUtilities/TableUIUtilities");
+  if (!PluginLoader.contains("PluginUtilities/TableUIUtilities"))
+    PluginLoader.load("PluginUtilities/TableUIUtilities");
 
-  DM.data.plugins.addCallbackListener("PluginUtilities/TableUIUtilities", () => {
+  PluginLoader.addCallbackListener("PluginUtilities/TableUIUtilities", () => {
     TableUI.pane.addHandler("onOpen", 'tbl_prop_edit', addResizeInput);
   })
 

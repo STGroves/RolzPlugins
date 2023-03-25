@@ -1,8 +1,9 @@
 import HTMLUtilities from "../PluginUtilities/HTMLUtilities.js";
+import PluginLoader from "../PluginLoader.js";
 
 export default function() {
-  if (!DM.data.plugins.contains("PluginUtilities/TableUIUtilities"))
-    DM.data.plugins.load("PluginUtilities/TableUIUtilities");
+  if (!PluginLoader.contains("PluginUtilities/TableUIUtilities"))
+    PluginLoader.load("PluginUtilities/TableUIUtilities");
 
   DM.tools.tokens.edit_properties = function(id) {
     DM.selected_id = id;
