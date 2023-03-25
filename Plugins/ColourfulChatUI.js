@@ -98,7 +98,7 @@ export default function() {
     PluginLoader.load("PluginUtilities/TableUIUtilities");
 
   PluginLoader.addCallbackListener("PluginUtilities/TableUIUtilities", () => {
-    TableUI.addHandler("onPromptOpen", '/table/options?room_id=' + encodeURIComponent(WSConnection.options.room_id), loadColoursPage);
+    TableUI.addHandler("promptOpen", '/table/options?room_id=' + encodeURIComponent(WSConnection.options.room_id), loadColoursPage);
     PluginLoader.addCallbackListener("PluginUtilities/WSConnectionUtilities", () => {
       initiateUser();
     });
