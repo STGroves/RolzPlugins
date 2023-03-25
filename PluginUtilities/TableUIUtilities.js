@@ -1,3 +1,5 @@
+import PluginLoader from "../PluginLoader.js";
+
 export default function() {
   TableUI.pane.onOpen = {};
   TableUI.pane.onClose = {};
@@ -178,6 +180,6 @@ export default function() {
 			TableUI.open_prompt(url);
 	}
 
-  if (!DM.data.plugins.contains("PluginUtilities/WSConnectionUtilities"))
-    DM.data.plugins.load("PluginUtilities/WSConnectionUtilities");
+  if (!PluginLoader.contains("PluginUtilities/WSConnectionUtilities"))
+    PluginLoader.load("PluginUtilities/WSConnectionUtilities");
 }

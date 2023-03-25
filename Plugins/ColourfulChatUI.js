@@ -94,17 +94,17 @@ export default function() {
   
   });
 
-  if (!DM.data.plugins.contains("PluginUtilities/TableUIUtilities"))
-    DM.data.plugins.load("PluginUtilities/TableUIUtilities");
+  if (!PluginLoader.contains("PluginUtilities/TableUIUtilities"))
+    PluginLoader.load("PluginUtilities/TableUIUtilities");
 
-  DM.data.plugins.addCallbackListener("PluginUtilities/TableUIUtilities", () => {
+  PluginLoader.addCallbackListener("PluginUtilities/TableUIUtilities", () => {
     TableUI.addHandler("onPromptOpen", '/table/options?room_id=' + encodeURIComponent(WSConnection.options.room_id), loadColoursPage);
-    DM.data.plugins.addCallbackListener("PluginUtilities/WSConnectionUtilities", () => {
+    PluginLoader.addCallbackListener("PluginUtilities/WSConnectionUtilities", () => {
       initiateUser();
     });
   });
 
-  /*DM.data.plugins.addCallbackListener("PluginUtilities/TableUIUtilities", () => {
+  /*PluginLoader.addCallbackListener("PluginUtilities/TableUIUtilities", () => {
     TableUI.addHandler("onPromptClose", '/table/options?room_id=' + encodeURIComponent(WSConnection.options.room_id), () => {
       delete WSConnection.options.mappref.updateTags;
       delete WSConnection.options.mappref.updateData;
