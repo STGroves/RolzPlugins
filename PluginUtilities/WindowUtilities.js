@@ -79,7 +79,7 @@ function createPromptEmptyDiv(label, id = "") {
   contentDiv.id = id;
   wrapperDiv.appendChild(contentDiv);
 
-  return { wrapper: wrapperDiv, contentDiv: contentDiv };
+  return { wrapperDiv: wrapperDiv, contentDiv: contentDiv };
 }
 
 export default {
