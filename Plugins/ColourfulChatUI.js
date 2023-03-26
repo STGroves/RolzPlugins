@@ -86,8 +86,10 @@ export default function() {
         return div.innerHTML;
 
       span.classList.remove("username");
-      span.style = colourObj[msg.from].css;
-      span.style.fontWeight = "bold";
+      span.setAttribute("style", `background: ${colourObj[msg.from].css};
+        -webkit-background-clip: text;
+        font-weight: bold;
+      `);
 
       return div.innerHTML;
     };
