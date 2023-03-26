@@ -1,6 +1,6 @@
 import PartyListUtilities from "./PluginUtilities/PartyListUtilities.js";
 
-export default {
+const publicData = {
   get MessageIDs() {
     return {
       CLIENT_TO_SERVER: "CSM",
@@ -27,10 +27,12 @@ export default {
   },
 
   init: function () {
-    DM.send = function(data) {
-      const STATE = this.ConnectionStates;
+    const self = this;
 
-      switch(getConnectionState()) {
+    DM.send = function(data) {
+      const STATE = self.ConnectionStates;
+
+      switch(self.getConnectionState()) {
         case STATE.MASTER:
           sendToClients(data);
           break;
@@ -51,8 +53,8 @@ export default {
 
       const {type, ...data} = msg;
       const USER_STATE = getConnectionState();
-      const STATES = this.ConnectionState;
-      const MSG_IDS = this.MessageIDs;
+      const STATES = self.ConnectionState;
+      const MSG_IDS = self.MessageIDs;
 
       if (!!data.pluginMessage)
       {
@@ -85,8 +87,10 @@ export default {
   }
 }
 
+export default publicData;
+
 function sendToServer(data) {
-  data.pluginMessage = getMessageIDs().CLIENT_TO_SERVER;
+  data.pluginMessage = publicData.MessageIDs.CLIENT_TO_SERVER;
   WSConnection.send({
     type: "client-tbl-mapdata",
     source_instance_id : WSConnection.options.conid,
@@ -95,7 +99,7 @@ function sendToServer(data) {
 }
 
 function sendToClients(data) {
-  data.pluginMessage = getMessageIDs().SERVER_TO_CLIENT;
+  data.pluginMessage = publicData.MessageIDs.SERVER_TO_CLIENT;
   WSConnection.send({
     type: "client-tbl-mapdata",
     source_instance_id : WSConnection.options.conid,
@@ -104,7 +108,7 @@ function sendToClients(data) {
 }
 
 function sendToOthers(data) {
-  data.pluginMessage = getMessageIDs().CLIENT_TO_CLIENT;
+  data.pluginMessage = publicData.MessageIDs.CLIENT_TO_CLIENT;
   WSConnection.send({
     type: "client-tbl-mapdata",
     source_instance_id : WSConnection.options.conid,
