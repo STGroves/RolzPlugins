@@ -142,24 +142,13 @@ function createSelection(opts) {
   oldValue = selection.value;
   
   selection.addEventListener("change", (event) => {
-    if (!!opts.options[oldValue] && !!opts.options[oldValue].callbacks) {
-      const hiddenCB = opts.options[oldValue].callbacks.hidden;
-      
-      if (!!hiddenCB)
-        hiddenCB(event);
-    }
+    if (!!opts.options[oldValue])
+      selection.dispatchEvent(new CustomEvent("hidden", {detail: oldValue}));
     
-    if (!!opts.options[event.target.value].callbacks) {
-      const visibleCB = opts.options[event.target.value].callbacks.visible;
-
-      if (!!visibleCB)
-        visibleCB(event);
-    }
+    if (!!opts.options[event.target.value])
+      selection.dispatchEvent(new CustomEvent("visible", {detail: event.target.value}));
     
     oldValue = event.target.value;
-    
-    if(!!opts.valueChanged)
-      opts.valueChanged(event);
   });
 
   return selection;

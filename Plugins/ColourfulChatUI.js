@@ -20,9 +20,9 @@ export default function() {
   };
 
   if (PartyListUtilities.isGM())
-    document.addEventListener(PluginServerHandler.getMessageIDs().CLIENT_TO_SERVER, handleMessageGM);
+    document.addEventListener(PluginServerHandler.MessageIDs.CLIENT_TO_SERVER, handleMessageGM);
   else
-    document.addEventListener(PluginServerHandler.getMessageIDs().SERVER_TO_CLIENT, handleMessageUser);
+    document.addEventListener(PluginServerHandler.MessageIDs.SERVER_TO_CLIENT, handleMessageUser);
   
   document.addEventListener("svrmsg", handleConnection);
 
@@ -30,7 +30,7 @@ export default function() {
     if (PartyListUtilities.isGM()) {
       if (!WSConnection.options.mappref.chatUI) {
         WSConnection.options.mappref.chatUI = {allowPlayerChoice: false, userData: {}};
-        WSConnection.options.mappref.chatUI.userData[PartyListUtilities.SELF] = {colour: "#418030", time: Date.now()};
+        WSConnection.options.mappref.chatUI.userData[PartyListUtilities.SELF] = {css: "#418030", selection: "default", time: Date.now()};
         DM.send({type: CREATOR, mapsettings: WSConnection.options.mappref});
       }
     }
@@ -39,7 +39,7 @@ export default function() {
     {
       if (PartyListUtilities.isGMPresent())
       {
-        WSConnection.addPluginUserData(MSG_UPDATE_ID, {user: SELF, colour: "#418030", time: Date.now()});
+        WSConnection.addPluginUserData(MSG_UPDATE_ID, {user: SELF, css: "#418030", selection: "default", time: Date.now()});
         WSConnection.addPluginUserTags(MSG_UPDATE_ID, MSG_TAGS.NEW_USER);
         
         DM.send(WSConnection.prepareUserSendPacket(DM.userdata));
@@ -104,17 +104,6 @@ export default function() {
     });
   });
 
-  /*PluginLoader.addCallbackListener("PluginUtilities/TableUIUtilities", () => {
-    TableUI.addHandler("onPromptClose", '/table/options?room_id=' + encodeURIComponent(WSConnection.options.room_id), () => {
-      delete WSConnection.options.mappref.updateTags;
-      delete WSConnection.options.mappref.updateData;
-      delete room_mapsettings.updateTags;
-      delete room_mapsettings.updateData;
-      delete userpref.updateTags;
-      delete userpref.updateData;
-    })
-  })*/;
-
   function handleConnection(msg) {
     console.log(msg.detail.context);
   }
@@ -159,22 +148,6 @@ export default function() {
 
       /**TO-DO: User update colour */
     }
-
-    /*const found = Object.entries(PartyList.members).find(x => x[1].nick === from)[1];
-
-    else if(!!data.detail.mapdata && !!data.detail.mapdata.updateType && data.detail.mapdata.updateType === "chatColour") {
-      const {user, ...colourData} = data.detail.mapdata.updateData;
-
-      if (user === data.detail.from) {
-        const userData = data.detail.mapData;
-        userData.custom.chatColour = colour;
-
-        delete userData.updateType;
-        delete userData.updateData;
-
-        DM.send(userData);
-      }
-    }*/
   }
 
   function updateChatUI(user, value) {
@@ -183,7 +156,6 @@ export default function() {
       WSConnection.addPluginCreatorTags(MSG_UPDATE_ID, MSG_TAGS.GM_SETTINGS_UPDATE);
     } else {
       WSConnection.addPluginUserData(MSG_UPDATE_ID, {user: user, ...value, time: Date.now()});
-      //WSConnection.addPluginUserTag(MSG_UPDATE_ID);
     }
   }
 
@@ -307,25 +279,25 @@ export default function() {
     previewDiv.classList.add("tempUsernameFlex");
   
     const previewSpan = document.createElement("span");
-    previewSpan.innerHTML = `${label} <span>|</span> ${PartyListUtilities.findUser(label).character}`
-  
+    previewSpan.innerHTML = `${label} <span>|</span> ${PartyListUtilities.findUser(label).character}`;
     previewSpan.classList.add("tempUsername");
+
+    previewSpan.updateCSS = function (css, selection) {
+      previewSpan.setAttribute("style", `background: ${css}; -webkit-background-clip: text;`);
+      updateChatUI(label, {css: css, selection: selection});
+    };
   
     previewDiv.appendChild(previewSpan);
   
-    const selections = {};
-  
-    if (value.selection === "default") {
-      previewSpan.style.background = "#418030";
-    }
+    if (value.selection === "default")
+      previewSpan.updateCSS("#418030", "default");
   
     const colour = document.createElement("input");
     colour.type = "color";
     colour.style.height = "40px";
   
     colour.addEventListener("input", (event) => {
-      previewSpan.setAttribute("style", `background: ${event.target.value}; -webkit-background-clip: text;`);
-      updateChatUI(label, {css: previewSpan.style, selection: "colour"});
+      previewSpan.updateCSS(event.target.value, "colour");
     });
   
     const gradientData = {
@@ -343,8 +315,7 @@ export default function() {
     const gradientEditor = HTMLUtilities.createGradientEditor(gradientData);
   
     gradientEditor.getHTML().addEventListener("draw", (event) => {
-      previewSpan.setAttribute("style", `background: ${event.detail}; -webkit-background-clip: text;`);
-      updateChatUI(label, {css: previewSpan.style, selection: "gradient"});
+      previewSpan.updateCSS(event.detail, "gradient");
     });
   
     const arr = Object.keys(GradientPresets).sort();
@@ -352,19 +323,17 @@ export default function() {
     const obj = {options: {}};
   
     arr.forEach((x) => {
-      obj.options[x] = {
-        label: Utilities.toTitleCase(x.replaceAll("_", " "))
-      }
+      obj.options[x] = Utilities.toTitleCase(x.replaceAll("_", " "));
     });
   
     obj.defaultValue = Object.keys(obj.options)[0];
-    obj.valueChanged = (event) => {
-      previewSpan.setAttribute("style", `background: ${GradientPresets[event.target.value]}; -webkit-background-clip: text;`);
-      updateChatUI(label, {css: previewSpan.style, selection: "preset"});
-    }
     
     const presetSelect = HTMLUtilities.createSelection(obj);
     presetSelect.style.height = "40px";
+
+    presetSelect.addEventListener("change", (event) => {
+      previewSpan.updateCSS(GradientPresets[event.target.value], "preset");
+    })
   
     line2.append(colour, gradientDiv, presetSelect);
   
@@ -402,59 +371,54 @@ export default function() {
   
     const colourTypeOptions = {
       options: {
-        default: {
-          label: "Default",
-          callbacks: {
-            visible: () => {
-              previewSpan.setAttribute("style", `background: #418030; -webkit-background-clip: text;`);
-              updateChatUI(label, {css: previewSpan.style, selection: "default"});
-            }
-          }
-        },
-        solid: {
-          label: "Solid",
-          callbacks: {
-            visible: () => {
-              previewSpan.setAttribute("style", `background: ${colour.value}; -webkit-background-clip: text;`);
-              colour.classList.remove("hideInput");
-            },
-            hidden: () => {
-              colour.classList.add("hideInput");
-            }
-          }
-        },
-        gradient: {
-          label: "Gradient",
-          callbacks: {
-            visible: () => {
-              gradientDiv.classList.remove("hideInput");
-              gradientEditor.Visible = true;
-            },
-            hidden: () => {
-              gradientDiv.classList.add("hideInput");
-              gradientEditor.Visible = false;
-            }
-          }
-        },
-        preset: {
-          label: "Preset",
-          callbacks: {
-            visible: () => {
-              previewSpan.setAttribute("style", `background: ${GradientPresets[presetSelect.value]}; -webkit-background-clip: text;`);
-              presetSelect.classList.remove("hideInput");
-            },
-            hidden: () => {
-              presetSelect.classList.add("hideInput");
-            }
-          }
-        }
+        default: "Default",
+        solid: "Solid",
+        gradient: "Gradient",
+        preset: "Preset"
       },
       defaultValue: value.selection
     };
-    
+
     const colourType = HTMLUtilities.createSelection(colourTypeOptions);
     colourType.style.flex = "0.5";
     
+    colourType.addEventListener("hidden", (event) => {
+      if (event.detail = "default")
+        return;
+      
+      elements[event.detail].html.classList.add("hideInput");
+
+      if (event.detail === "gradient")
+        gradientEditor.Visible = false;
+    });
+
+    colourType.addEventListener("visible", (event) => {
+      if (event.detail !== "default")
+        elements[event.detail].html.classList.remove("hideInput");
+
+      let css;
+
+      switch (event.detail) {
+        case "default":
+          css = "#418030";
+          break;
+        
+        case "solid":
+          css = colour.value;
+          break;
+        
+        case "gradient":
+          gradientEditor.Visible = true;
+          return;
+        
+        case "preset":
+          css = GradientPresets[presetSelect.value];
+          break;
+      }
+
+      previewSpan.updateCSS(css, event.detail);
+    });
+
     line1.append(colourType, previewDiv);
     
     colourTypeOptions.options[value.selection].callbacks.visible();
