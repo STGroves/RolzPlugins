@@ -159,7 +159,7 @@ function styleExists(ID, className) {
 
   const style = document.getElementById(ID);
 
-  return (style && style.innerHTML.search(`${className} }`) > -1);
+  return (style && style.innerHTML.search(`${className} {`) > -1);
 }
 
 function createOrUpdateStyle(ID, className, cssInner, parentElement = null) {

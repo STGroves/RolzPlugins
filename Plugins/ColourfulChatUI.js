@@ -263,6 +263,7 @@ export default function() {
         margin: auto;
         display: block;
         width: fit-content;
+        -webkit-text-fill-color: transparent;
       `);
   
     const {wrapperDiv, contentDiv} = WindowUtilities.createPromptEmptyDiv(label);
