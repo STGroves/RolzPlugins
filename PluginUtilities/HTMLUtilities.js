@@ -159,7 +159,7 @@ function styleExists(ID, className) {
 
   const style = document.getElementById(ID);
 
-  return (style && style.innerHTML.search(className) > -1)
+  return (style && style.innerHTML.search(`${className} }`) > -1);
 }
 
 function createOrUpdateStyle(ID, className, cssInner, parentElement = null) {
@@ -170,9 +170,7 @@ function createOrUpdateStyle(ID, className, cssInner, parentElement = null) {
     if (!Utilities.isElement(parentElement))
       throw "parentElement must be an Element!"
 
-    const newData = `${className} {
-      ${cssInner}
-    }`;
+    const newData = `${className} {${cssInner}}`;
     
     let style;
 
@@ -183,8 +181,10 @@ function createOrUpdateStyle(ID, className, cssInner, parentElement = null) {
       parentElement.appendChild(style);
     } else {
       style = document.getElementById(ID);
+
       if (styleExists(ID, className))
         style.innerHTML.replace(new RegExp(`^ *${className} {0,1}{[^\{\}]+}`), newData);
+      
       else
         style.innerHTML += newData;
     }

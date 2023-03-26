@@ -222,8 +222,8 @@ export default function() {
   }
 
   function createColourSelection(label, value) {
-    if (!HTMLUtilities.styleExists(PluginLoader.DEFAULT_CSS_ID, "flexHor"))
-      HTMLUtilities.createOrUpdateStyle(PluginLoader.DEFAULT_CSS_ID, "flexHor", `
+    if (!HTMLUtilities.styleExists(PluginLoader.DEFAULT_CSS_ID, ".flexHor"))
+      HTMLUtilities.createOrUpdateStyle(PluginLoader.DEFAULT_CSS_ID, ".flexHor", `
         display: flex;
         align-items: stretch;
         column-gap: 5px;
@@ -233,20 +233,20 @@ export default function() {
         margin: 5px 0;
       `);
   
-    if (!HTMLUtilities.styleExists(PluginLoader.DEFAULT_CSS_ID, "selectionFlex"))
-      HTMLUtilities.createOrUpdateStyle(PluginLoader.DEFAULT_CSS_ID, "selectionFlex", `
+    if (!HTMLUtilities.styleExists(PluginLoader.DEFAULT_CSS_ID, ".selectionFlex"))
+      HTMLUtilities.createOrUpdateStyle(PluginLoader.DEFAULT_CSS_ID, ".selectionFlex", `
         position: relative;
         height: 100%;
         width: 100%;
       `);
   
-    if (!HTMLUtilities.styleExists(PluginLoader.DEFAULT_CSS_ID, "hideInput"))
-      HTMLUtilities.createOrUpdateStyle(PluginLoader.DEFAULT_CSS_ID, "hideInput", `
+    if (!HTMLUtilities.styleExists(PluginLoader.DEFAULT_CSS_ID, ".hideInput"))
+      HTMLUtilities.createOrUpdateStyle(PluginLoader.DEFAULT_CSS_ID, ".hideInput", `
         display: none !important;
       `);
   
-    if (!HTMLUtilities.styleExists(PluginLoader.DEFAULT_CSS_ID, "tempUsernameFlex"))
-      HTMLUtilities.createOrUpdateStyle(PluginLoader.DEFAULT_CSS_ID, "tempUsernameFlex", `
+    if (!HTMLUtilities.styleExists(PluginLoader.DEFAULT_CSS_ID, ".tempUsernameFlex"))
+      HTMLUtilities.createOrUpdateStyle(PluginLoader.DEFAULT_CSS_ID, ".tempUsernameFlex", `
         flex: 1;
         text-align: center;
         align-self: center;
@@ -255,8 +255,8 @@ export default function() {
         font-family: helvetica, Tahoma, Arial;
       `);
   
-    if (!HTMLUtilities.styleExists(PluginLoader.DEFAULT_CSS_ID, "tempUsername"))
-      HTMLUtilities.createOrUpdateStyle(PluginLoader.DEFAULT_CSS_ID, "tempUsername", `
+    if (!HTMLUtilities.styleExists(PluginLoader.DEFAULT_CSS_ID, ".tempUsername"))
+      HTMLUtilities.createOrUpdateStyle(PluginLoader.DEFAULT_CSS_ID, ".tempUsername", `
         line-height: 0.75em;
         padding: 0;
         padding-bottom: 0.2em;
