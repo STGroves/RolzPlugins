@@ -129,6 +129,17 @@ function createGradientEditor(opts) {
     document.head.append(cssLink);
   }
   
+  if (!styleExists(PluginLoader.DEFAULT_CSS_ID, "#prompt-window input[type=number]"))
+    createOrUpdateStyle(PluginLoader.DEFAULT_CSS_ID, "#prompt-window input[type=number]", `    background: black;
+      padding: 8px;
+      color: lightgreen;
+      font-weight: bold;
+      width: 100%;
+      border: 2px solid rgba(255,255,200,0.3);
+      margin-bottom: 8px;
+      box-shadow: none;`
+    );
+
   return editor;
 }
 
@@ -194,7 +205,7 @@ function createOrUpdateStyle(ID, className, cssInner, parentElement = null) {
         style.innerHTML.replace(new RegExp(`^ *${className} {0,1}{[^\{\}]+}`), newData);
       
       else
-        style.innerHTML += newData;
+        style.innerHTML += "\n" + newData;
     }
   } catch(e) {
     console.error(e);
