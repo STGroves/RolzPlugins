@@ -121,6 +121,14 @@ function createGradientEditor(opts) {
   if (!!opts.loadData)
     editor.load(opts.loadData);
 
+  if (!document.querySelector("[href='https://stgroves.github.io/RolzPlugins/Controls/GradientEditor/GradientEditorCSS.css']")) {
+    const cssLink = document.createElement("link");
+    cssLink.href = "https://stgroves.github.io/RolzPlugins/Controls/GradientEditor/GradientEditorCSS.css";
+    cssLink.rel = "stylesheet";
+
+    document.head.append(cssLink);
+  }
+  
   return editor;
 }
 
