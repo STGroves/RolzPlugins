@@ -52,7 +52,7 @@ const publicData = {
         return;
 
       const {type, ...data} = msg;
-      const USER_STATE = getConnectionState();
+      const USER_STATE = self.getConnectionState();
       const STATES = self.ConnectionState;
       const MSG_IDS = self.MessageIDs;
 
