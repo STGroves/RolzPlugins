@@ -133,7 +133,7 @@ function createSelection(opts) {
     const option = document.createElement("option");
 
     option.value = key;
-    option.innerText = value.label;
+    option.innerText = value;
 
     selection.appendChild(option);
   }

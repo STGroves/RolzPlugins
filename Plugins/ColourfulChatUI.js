@@ -383,7 +383,7 @@ export default function() {
     colourType.style.flex = "0.5";
     
     colourType.addEventListener("hidden", (event) => {
-      if (event.detail = "default")
+      if (event.detail === "default")
         return;
       
       elements[event.detail].html.classList.add("hideInput");
