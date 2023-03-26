@@ -24,7 +24,7 @@ export default function() {
   else
     document.addEventListener(PluginServerHandler.MessageIDs.SERVER_TO_CLIENT, handleMessageUser);
   
-  document.addEventListener("svrmsg", handleConnection);
+  document.addEventListener("srvmsg", handleConnection);
 
   function initiateUser() {
     if (PartyListUtilities.isGM()) {

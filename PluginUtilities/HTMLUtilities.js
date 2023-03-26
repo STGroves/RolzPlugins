@@ -142,9 +142,9 @@ function createGradientEditor(opts) {
 
   if (!styleExists(PluginLoader.DEFAULT_CSS_ID, ".handleWrapperInput"))
     createOrUpdateStyle(PluginLoader.DEFAULT_CSS_ID, ".handleWrapperInput", `
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    `);
+      padding-left: 0 !important;
+      padding-right: 0 !important;`
+    );
 
   return editor;
 }
@@ -203,6 +203,7 @@ function createOrUpdateStyle(ID, className, cssInner, parentElement = null) {
       style = document.createElement("style");
       style.id = ID;
       style.innerHTML += newData;
+      
       parentElement.appendChild(style);
     } else {
       style = document.getElementById(ID);
