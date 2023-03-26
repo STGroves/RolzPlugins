@@ -303,7 +303,7 @@ export default function() {
   
     const gradientData = {
       handleWidth: 10,
-      handleInputWidth: 40,
+      handleInputWidth: 50,
       editorHeight: 30,
       handleBorder: 2
     }
