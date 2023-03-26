@@ -421,7 +421,7 @@ export default function() {
 
     line1.append(colourType, previewDiv);
     
-    colourTypeOptions.options[value.selection].callbacks.visible();
+    colourType.dispatchEvent(new CustomEvent("visible", {detail: value.selection}));
 
     return wrapperDiv;
   }
