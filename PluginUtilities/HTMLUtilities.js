@@ -140,6 +140,12 @@ function createGradientEditor(opts) {
       box-shadow: none;`
     );
 
+  if (!styleExists(PluginLoader.DEFAULT_CSS_ID, ".handleWrapperInput"))
+    createOrUpdateStyle(PluginLoader.DEFAULT_CSS_ID, ".handleWrapperInput", `
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    `);
+
   return editor;
 }
 
