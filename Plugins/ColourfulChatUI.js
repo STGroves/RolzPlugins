@@ -88,12 +88,13 @@ export default function() {
       span.classList.remove("username");
       span.setAttribute("style", `background: ${colourObj[msg.from].css};
         -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
         font-weight: bold;
       `);
 
       return div.innerHTML;
     };
-  
   });
 
   if (!PluginLoader.contains("PluginUtilities/TableUIUtilities"))
@@ -315,12 +316,6 @@ export default function() {
     
     gradientData.parent = gradientDiv;
   
-    const gradientEditor = HTMLUtilities.createGradientEditor(gradientData);
-  
-    gradientEditor.getHTML().addEventListener("draw", (event) => {
-      previewSpan.updateCSS(event.detail, "gradient");
-    });
-  
     const arr = Object.keys(GradientPresets).sort();
   
     const obj = {options: {}};
@@ -372,6 +367,12 @@ export default function() {
         propValue.html.classList.add("hideInput");
     }
   
+    const gradientEditor = HTMLUtilities.createGradientEditor(gradientData);
+  
+    gradientEditor.getHTML().addEventListener("draw", (event) => {
+      previewSpan.updateCSS(event.detail, "gradient");
+    });
+
     const colourTypeOptions = {
       options: {
         default: "Default",
