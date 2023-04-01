@@ -62,8 +62,8 @@ function createSlider(opts) {
     updateTrack(sliderRange, "lightgreen", "transparent");
   };
 
-  if (!document.getElementById(DEFAULT_ID) || !document.getElementById(DEFAULT_ID).innerHTML.search(".PluginSlider"))
-    createOrUpdateStyle(DEFAULT_ID,`.PluginSlider {
+  if (!document.getElementById(PluginLoader.DEFAULT_CSS_ID) || !document.getElementById(PluginLoader.DEFAULT_CSS_ID).innerHTML.search(".PluginSlider"))
+    createOrUpdateStyle(PluginLoader.DEFAULT_CSS_ID,`.PluginSlider {
       -webkit-appearance: none;
       -moz-appearance: none;
       border-radius: 8px;
@@ -95,7 +95,7 @@ function createSlider(opts) {
   let val = (opts.value - opts.min) / (opts.max - opts.min);
   let percent = val * 100;
   
-  createOrUpdateStyle(DEFAULT_ID,`#${opts.id} {
+  createOrUpdateStyle(PluginLoader.DEFAULT_CSS_ID,`#${opts.id} {
     background-image: -webkit-gradient(linear,
       left top, 
       right top, 
