@@ -32222,7 +32222,7 @@ var t;
         ]);
     });
 })*/
-  document.body.prepend(() => {
+  document.body.prepend(function() {
     const div = document.createElement("div");
     
     const STL = document.createElement("button");
@@ -32236,6 +32236,6 @@ var t;
     div.append(STL, OBJ);
 
     return div;
-  })
+  }())
 }),
   "function" == typeof define && define.amd ? define(t) : t();
